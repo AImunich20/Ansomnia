@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AnsomniaResumeFrozenVersion</key>
+	<integer>1</integer>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>Ansomnia</string>
+	<key>CFBundleExecutable</key>
+	<string>Ansomnia</string>
+	<key>CFBundleIconFile</key>
+	<string>AppIcon</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.aimunich20.ansomnia</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Ansomnia</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.5.0</string>
+	<key>CFBundleVersion</key>
+	<string>5</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>26.0</string>
+	<key>LSUIElement</key>
+	<true/>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2026 Krish Garg and AImunich20. MIT License.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Ansomnia needs your location permission so macOS lets it see Wi-Fi network names and rejoin your hotspot.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Ansomnia needs your location permission so macOS lets it see Wi-Fi network names and rejoin your hotspot.</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+</dict>
+</plist>
