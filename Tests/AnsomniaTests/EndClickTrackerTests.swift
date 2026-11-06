@@ -6,53 +6,44 @@ import XCTest
 /// event monitor before the status bar button or SwiftUI can claim it.
 final class EndClickTrackerTests: XCTestCase {
     private let button = CGRect(x: 80, y: 1, width: 20, height: 20)
+    private let none = EndClickTracker.Result(swallow: false, pressed: nil, end: false)
 
-    func testAClickOnTheButtonEndsTheSessionAndIsSwallowedWhole() {
+    /// The session ends on the press itself: a click the menu bar forwards
+    /// may never bring its mouse-up. The rest of the click is swallowed.
+    func testAPressOnTheButtonEndsTheSessionAtOnceAndTheClickIsSwallowedWhole() {
         var tracker = EndClickTracker()
-        let down = tracker.handle(.down, at: CGPoint(x: 90, y: 11), endButton: button)
-        XCTAssertEqual(down, .init(swallow: true, pressed: true, end: false))
+        XCTAssertEqual(tracker.handle(.down, at: CGPoint(x: 90, y: 11), endButton: button),
+                       .init(swallow: true, pressed: true, end: true))
         XCTAssertTrue(tracker.isTracking)
-        let up = tracker.handle(.up, at: CGPoint(x: 91, y: 12), endButton: button)
-        XCTAssertEqual(up, .init(swallow: true, pressed: false, end: true))
+        XCTAssertEqual(tracker.handle(.dragged, at: CGPoint(x: 10, y: 11), endButton: nil),
+                       .init(swallow: true, pressed: nil, end: false))
+        XCTAssertEqual(tracker.handle(.up, at: CGPoint(x: 10, y: 11), endButton: nil),
+                       .init(swallow: true, pressed: false, end: false), "ends once, not again on release")
         XCTAssertFalse(tracker.isTracking)
+    }
+
+    /// macOS 26 hands the app a status item click at the item's centre, so
+    /// the point can miss the × the pointer is on. Its hover is trusted.
+    func testHoveringTheButtonCountsAsAHitWhereverTheClickLands() {
+        var tracker = EndClickTracker()
+        XCTAssertEqual(tracker.handle(.down, at: CGPoint(x: 59, y: 11), endButton: button, hovering: true),
+                       .init(swallow: true, pressed: true, end: true))
     }
 
     func testAClickElsewhereIsLeftToTheRestOfTheApp() {
         var tracker = EndClickTracker()
         for point in [CGPoint(x: 10, y: 11), CGPoint(x: 60, y: 11)] {
-            XCTAssertEqual(tracker.handle(.down, at: point, endButton: button), .init(swallow: false, pressed: nil, end: false))
-            XCTAssertEqual(tracker.handle(.dragged, at: point, endButton: button), .init(swallow: false, pressed: nil, end: false))
-            XCTAssertEqual(tracker.handle(.up, at: CGPoint(x: 90, y: 11), endButton: button), .init(swallow: false, pressed: nil, end: false),
+            XCTAssertEqual(tracker.handle(.down, at: point, endButton: button), none)
+            XCTAssertEqual(tracker.handle(.dragged, at: CGPoint(x: 90, y: 11), endButton: button), none)
+            XCTAssertEqual(tracker.handle(.up, at: CGPoint(x: 90, y: 11), endButton: button), none,
                            "a press that began off the × does not end on it")
         }
     }
 
-    func testNoButtonMeansNoClickIsTaken() {
+    func testNoButtonMeansNoClickIsTakenEvenWhenHovering() {
         var tracker = EndClickTracker()
-        XCTAssertEqual(tracker.handle(.down, at: CGPoint(x: 90, y: 11), endButton: nil), .init(swallow: false, pressed: nil, end: false))
+        XCTAssertEqual(tracker.handle(.down, at: CGPoint(x: 90, y: 11), endButton: nil, hovering: true), none)
         XCTAssertFalse(tracker.isTracking)
-    }
-
-    func testDraggingAwayCancelsAndComingBackRestores() {
-        var tracker = EndClickTracker()
-        _ = tracker.handle(.down, at: CGPoint(x: 90, y: 11), endButton: button)
-        let near = CGPoint(x: button.maxX + EndClickTracker.cancelDistance - 1, y: 11)
-        let far = CGPoint(x: button.maxX + EndClickTracker.cancelDistance + 5, y: 11)
-        XCTAssertEqual(tracker.handle(.dragged, at: near, endButton: button), .init(swallow: true, pressed: true, end: false), "within the slop")
-        XCTAssertEqual(tracker.handle(.dragged, at: far, endButton: button), .init(swallow: true, pressed: false, end: false))
-        XCTAssertEqual(tracker.handle(.up, at: far, endButton: button), .init(swallow: true, pressed: false, end: false), "released away: cancelled")
-
-        _ = tracker.handle(.down, at: CGPoint(x: 90, y: 11), endButton: button)
-        _ = tracker.handle(.dragged, at: far, endButton: button)
-        XCTAssertEqual(tracker.handle(.up, at: near, endButton: button), .init(swallow: true, pressed: false, end: true), "back over it: ends")
-    }
-
-    /// The press is judged against the frame it began on, so a relayout
-    /// during the click does not move the target under the pointer.
-    func testTheFrameIsTheOneThePressBeganOn() {
-        var tracker = EndClickTracker()
-        _ = tracker.handle(.down, at: CGPoint(x: 90, y: 11), endButton: button)
-        XCTAssertEqual(tracker.handle(.up, at: CGPoint(x: 90, y: 11), endButton: nil), .init(swallow: true, pressed: false, end: true))
     }
 
     /// The fallback: the × is the bar's last 20 points before its 6 point

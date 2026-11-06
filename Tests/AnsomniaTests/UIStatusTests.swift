@@ -488,6 +488,23 @@ final class UIStatusTests: XCTestCase {
         )
     }
 
+    /// Typing 0 and Enter over a running session ends it, in either mode.
+    @MainActor
+    func testZeroTypedEndsARunningSessionAndOtherwiseShakes() {
+        for mode in [MenuBarModel.Mode.extend, .start] {
+            XCTAssertEqual(MenuBarModel.commitAction(mode: mode, typed: nil, defaultPreset: 3600, typedZero: true, sessionActive: true), .end)
+            XCTAssertEqual(MenuBarModel.commitAction(mode: mode, typed: nil, defaultPreset: 3600, typedZero: true, sessionActive: false), .reject)
+        }
+        var input = DurationInput()
+        XCTAssertFalse(input.isZero, "nothing typed is not zero")
+        input.minutes = 0
+        XCTAssertTrue(input.isZero)
+        input.hours = 0
+        XCTAssertTrue(input.isZero)
+        input.minutes = 5
+        XCTAssertFalse(input.isZero)
+    }
+
     /// The pills can be in start mode over a live session: the user reopened
     /// them while the start was still in flight. Collapsing then has to show
     /// the countdown, not pretend the Mac is free to sleep.

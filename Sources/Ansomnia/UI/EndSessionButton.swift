@@ -8,15 +8,19 @@ import SwiftUI
 /// press and doing nothing, or passed the click on to the mark beside it.
 /// `StatusItemController` takes any click inside `frameReported` in a local
 /// event monitor, before the rest of the app sees it, and tracks it to
-/// mouse-up the way an AppKit button does (`EndClickTracker`). This view
-/// only draws the hover and the press it is told about, and reports where
-/// it is.
+/// mouse-up (`EndClickTracker`). This view only draws the hover and the
+/// press it is told about, and reports where it is and whether the pointer
+/// is over it.
 struct EndSessionButton: View {
     let reduceMotion: Bool
     let pressed: Bool
     let action: () -> Void
     /// Where the × is, in `StatusRootView.coordinateSpace`; nil once it has gone.
     let frameReported: (CGRect?) -> Void
+    /// Whether the pointer is over the ×. The menu bar hands the app a
+    /// click on the status item at the item's centre, so the controller
+    /// trusts this, not the click's location.
+    let hoverReported: (Bool) -> Void
 
     @State private var hovering = false
 
@@ -39,13 +43,13 @@ struct EndSessionButton: View {
         .animation(Motion.snappy(reduceMotion: reduceMotion), value: hovering)
         .frame(width: 20, height: 20)
         .contentShape(Rectangle())
-        .onHover { hovering = $0 }
+        .onHover { hovering = $0; hoverReported($0) }
         .onGeometryChange(for: CGRect.self) { proxy in
             proxy.frame(in: .named(StatusRootView.coordinateSpace))
         } action: { frame in
             frameReported(frame)
         }
-        .onDisappear { frameReported(nil) }
+        .onDisappear { frameReported(nil); hoverReported(false) }
         .help("End the session")
         .accessibilityLabel("End session")
         .accessibilityAddTraits(.isButton)

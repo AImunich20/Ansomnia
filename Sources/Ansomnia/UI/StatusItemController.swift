@@ -215,12 +215,6 @@ final class StatusItemController: NSObject {
 
     private var button: NSStatusBarButton? { statusItem.button }
 
-    /// A left mouse event on its way into the app: the ones that make up a
-    /// click on the × are handled here and swallowed (true); every other
-    /// event goes on as it was. A local monitor sees the event before the
-    /// status bar button, SwiftUI's gestures or any view does, so none of
-    /// them can take the click from the ×, which is what kept it from
-    /// ending sessions.
     /// Where a click ends the session: the frame the × reports, joined
     /// with where the layout puts it (the last `endButtonSlot` points before
     /// the trailing inset of the bar), so a frame not yet reported, or one
@@ -240,25 +234,38 @@ final class StatusItemController: NSObject {
         return CGRect(x: barWidth - trailingInset - slot, y: 0, width: slot, height: height)
     }
 
+    /// A left mouse event on its way into the app: the ones that make up a
+    /// click on the × are handled here and swallowed (true); every other
+    /// event goes on as it was. A local monitor sees the event before the
+    /// status bar button, SwiftUI's gestures or any view does, so none of
+    /// them can take the click from the ×, which is what kept it from
+    /// ending sessions.
+    ///
+    /// On macOS 26 the menu bar hands a click on a status item to the app
+    /// as a click at the item's centre, wherever the pointer was, so the
+    /// event's own location cannot say whether the × was hit. The pointer's
+    /// real position (`NSEvent.mouseLocation`) and the ×'s own hover, which
+    /// follows the pointer correctly, are used instead.
     private func swallowsEndClick(_ event: NSEvent) -> Bool {
         guard let host = hostingView, event.window != nil, event.window === host.window || endClick.isTracking else {
             return false
         }
         let frame = endButtonHitFrame(hostHeight: host.bounds.height)
-        let point = host.topLeftPoint(of: event)
+        let point = host.topLeftPointerPoint() ?? host.topLeftPoint(of: event)
         let kind: EndClickTracker.Kind
         switch event.type {
         case .leftMouseDown:
             if event.modifierFlags.contains(.control) { return false }
             kind = .down
             if manager.isActive {
-                Log.info("status click at \(Int(point.x)),\(Int(point.y)); end button \(frame.map { NSStringFromRect($0) } ?? "none"), reported \(model.endButtonFrame.map { NSStringFromRect($0) } ?? "none")")
+                let reported = host.topLeftPoint(of: event)
+                Log.info("status click: pointer \(Int(point.x)),\(Int(point.y)), event \(Int(reported.x)),\(Int(reported.y)), hovering × \(model.endHovered); end button \(frame.map { NSStringFromRect($0) } ?? "none"), reported \(model.endButtonFrame.map { NSStringFromRect($0) } ?? "none")")
             }
         case .leftMouseDragged: kind = .dragged
         case .leftMouseUp: kind = .up
         default: return false
         }
-        let result = endClick.handle(kind, at: point, endButton: frame)
+        let result = endClick.handle(kind, at: point, endButton: frame, hovering: model.endHovered)
         if let pressed = result.pressed, model.endPressed != pressed { model.endPressed = pressed }
         if result.end { tapToEnd() }
         return result.swallow
@@ -532,15 +539,21 @@ final class StatusItemController: NSObject {
     // MARK: Commit
 
     /// Enter: start or extend with the typed value. With nothing typed it
-    /// starts the default preset; while extending it shakes instead.
+    /// starts the default preset; while extending it shakes instead. Zero
+    /// typed over a running session ends it.
     func commit() {
         guard case let .entering(mode) = model.phase else { return }
         // Nothing to commit once the monitors are down: Enter has already
         // been pressed (or Esc), and the slots are retracting.
         guard keyCatcher != nil else { return }
-        switch MenuBarModel.commitAction(mode: mode, typed: model.input.total, defaultPreset: manager.config.defaultPreset) {
+        switch MenuBarModel.commitAction(mode: mode, typed: model.input.total, defaultPreset: manager.config.defaultPreset,
+                                         typedZero: model.input.isZero, sessionActive: manager.isActive) {
         case let .run(duration):
             run(mode: mode, duration: duration)
+        case .end:
+            Log.info("session end requested: 0 typed")
+            collapse()
+            endNow()
         case .reject:
             model.rejectBounce += 1
         }
@@ -923,17 +936,26 @@ final class StatusHostingView: NSHostingView<StatusRootView> {
     /// The event's location in this view with a top-left origin, as SwiftUI
     /// lays the content out.
     func topLeftPoint(of event: NSEvent) -> CGPoint {
-        let p = convert(event.locationInWindow, from: nil)
-        return isFlipped ? p : CGPoint(x: p.x, y: bounds.height - p.y)
+        topLeft(convert(event.locationInWindow, from: nil))
+    }
+
+    /// Where the pointer really is, in this view with a top-left origin;
+    /// nil when the view is in no window.
+    func topLeftPointerPoint() -> CGPoint? {
+        guard let window else { return nil }
+        return topLeft(convert(window.convertPoint(fromScreen: NSEvent.mouseLocation), from: nil))
+    }
+
+    private func topLeft(_ p: CGPoint) -> CGPoint {
+        isFlipped ? p : CGPoint(x: p.x, y: bounds.height - p.y)
     }
 }
 
-/// A click on the end button (×), followed event by event: a press on it
-/// shows it pressed, dragging away (past `cancelDistance`) or back updates
-/// that, and releasing over it ends the session, the way an AppKit button
-/// behaves. Every event of such a click is swallowed, so the status bar
-/// button and SwiftUI never see half of it. Pure, so it is tested without
-/// a menu bar.
+/// A click on the end button (×), followed event by event. The press
+/// ends the session at once, on mouse-down: a click forwarded by the menu
+/// bar may never deliver its mouse-up to the app. The rest of that click,
+/// up to its mouse-up, is swallowed too, so the status bar button and
+/// SwiftUI never see half of it. Pure, so it is tested without a menu bar.
 struct EndClickTracker {
     enum Kind { case down, dragged, up }
 
@@ -946,34 +968,27 @@ struct EndClickTracker {
         var end: Bool
     }
 
-    /// How far from the × a press may wander and still end the session on
-    /// release, the slop an AppKit button allows.
-    static let cancelDistance: CGFloat = 12
+    private var tracking = false
 
-    private var tracked: CGRect?
+    var isTracking: Bool { tracking }
 
-    var isTracking: Bool { tracked != nil }
-
-    mutating func handle(_ kind: Kind, at point: CGPoint, endButton: CGRect?) -> Result {
+    /// `hovering`: the × shows the pointer over it, which counts as a hit
+    /// even when `point` misses `endButton`.
+    mutating func handle(_ kind: Kind, at point: CGPoint, endButton: CGRect?, hovering: Bool = false) -> Result {
         switch kind {
         case .down:
-            guard let frame = endButton, frame.contains(point) else {
-                tracked = nil
+            guard let frame = endButton, hovering || frame.contains(point) else {
+                tracking = false
                 return Result(swallow: false, pressed: nil, end: false)
             }
-            tracked = frame
-            return Result(swallow: true, pressed: true, end: false)
+            tracking = true
+            return Result(swallow: true, pressed: true, end: true)
         case .dragged:
-            guard let frame = tracked else { return Result(swallow: false, pressed: nil, end: false) }
-            return Result(swallow: true, pressed: Self.hotZone(frame).contains(point), end: false)
+            return Result(swallow: tracking, pressed: nil, end: false)
         case .up:
-            guard let frame = tracked else { return Result(swallow: false, pressed: nil, end: false) }
-            tracked = nil
-            return Result(swallow: true, pressed: false, end: Self.hotZone(frame).contains(point))
+            guard tracking else { return Result(swallow: false, pressed: nil, end: false) }
+            tracking = false
+            return Result(swallow: true, pressed: false, end: false)
         }
-    }
-
-    private static func hotZone(_ frame: CGRect) -> CGRect {
-        frame.insetBy(dx: -cancelDistance, dy: -cancelDistance)
     }
 }

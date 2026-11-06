@@ -4,7 +4,12 @@ name: Release
 # Resources/Info.plist. If v<version> has no tag yet, run the tests, build
 # the DMG with scripts/make-dmg.sh and publish it as the GitHub Release
 # v<version>, marked Latest. A push that keeps the version finishes in
-# seconds. To ship a new version, bump the version in Resources/Info.plist
+# seconds.
+#
+# The tests run in their own job, after the release, not before it:
+# they take about 18 minutes and the build about one, and a failure never
+# held the release back anyway. The release is out in about two minutes;
+# the test job's result shows on the same run soon after. To ship a new version, bump the version in Resources/Info.plist
 # and push.
 #
 # Installed copies find the release with Settings > App > Check for updates,
@@ -27,6 +32,8 @@ jobs:
     runs-on: macos-26
     permissions:
       contents: write
+    outputs:
+      publish: ${{ steps.plan.outputs.publish }}
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -53,13 +60,6 @@ jobs:
         run: |
           xcodebuild -version
           swift --version
-
-      # The suite was written for a local Mac; a failure here is shown on
-      # the run but does not hold the release back.
-      - name: Test
-        if: steps.plan.outputs.publish == 'true'
-        continue-on-error: true
-        run: swift test
 
       - name: Build DMG
         if: steps.plan.outputs.publish == 'true'
@@ -98,3 +98,17 @@ jobs:
         with:
           name: Ansomnia-dmg
           path: dist/
+
+  # The suite was written for a local Mac; a failure here is shown on the
+  # run but does not hold the release back. Runs only when the release job
+  # publishes, so a push that keeps the version still costs seconds.
+  test:
+    needs: release
+    if: needs.release.outputs.publish == 'true'
+    runs-on: macos-26
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - name: Test
+        run: swift test

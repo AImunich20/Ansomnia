@@ -23,12 +23,18 @@ final class MenuBarModel {
         case run(TimeInterval)
         /// Nothing to act on: shake the focused pill.
         case reject
+        /// Zero typed over a running session: end it.
+        case end
     }
 
     /// Bare Enter with every pill empty starts the default preset, so the
     /// common case is one keystroke. While extending there is no sensible
     /// default duration, so it shakes instead.
-    static func commitAction(mode: Mode, typed: TimeInterval?, defaultPreset: TimeInterval) -> CommitAction {
+    /// Zero typed (`typedZero`) while a session runs ends it, the same as
+    /// the ×; with no session it shakes.
+    static func commitAction(mode: Mode, typed: TimeInterval?, defaultPreset: TimeInterval,
+                             typedZero: Bool = false, sessionActive: Bool = false) -> CommitAction {
+        if typedZero { return sessionActive ? .end : .reject }
         if let typed { return .run(typed) }
         guard mode == .start, defaultPreset > 0 else { return .reject }
         return .run(defaultPreset)
@@ -96,6 +102,8 @@ final class MenuBarModel {
     /// take a click on the × before SwiftUI or the status bar button can
     /// claim it. Not observed: nothing is drawn from it.
     @ObservationIgnored var endButtonFrame: CGRect?
+    /// The pointer is over the ×, as its hover reports it. Not observed.
+    @ObservationIgnored var endHovered: Bool = false
     /// The × is held down, the pointer still over it.
     var endPressed: Bool = false
 

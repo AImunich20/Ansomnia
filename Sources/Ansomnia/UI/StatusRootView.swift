@@ -85,7 +85,8 @@ struct StatusRootView: View {
                         reduceMotion: reduceMotion,
                         pressed: model.endPressed,
                         action: onEndTap,
-                        frameReported: { [model] frame in model.endButtonFrame = frame }
+                        frameReported: { [model] frame in model.endButtonFrame = frame },
+                        hoverReported: { [model] hovering in model.endHovered = hovering }
                     )
                         .transition(Motion.ringTransition(reduceMotion: reduceMotion))
                 }

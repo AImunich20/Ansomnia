@@ -89,6 +89,12 @@ struct DurationInput: Equatable, Sendable {
         return v >= 0 && v <= field.maximum
     }
 
+    /// Something was typed, every field in range, and it all adds up to
+    /// zero: "0" in any pill. Ends a running session.
+    var isZero: Bool {
+        !isEmpty && Field.allCases.allSatisfy(isValid) && (days ?? 0) == 0 && (hours ?? 0) == 0 && (minutes ?? 0) == 0
+    }
+
     /// Every field in range and at least one non-zero.
     var isValid: Bool {
         Field.allCases.allSatisfy(isValid) && (total ?? 0) > 0
