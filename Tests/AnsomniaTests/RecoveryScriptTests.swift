@@ -4504,6 +4504,70 @@ final class RecoveryScriptTests: XCTestCase {
         XCTAssertTrue(r.stdout.contains("Uninstall:"), r.stdout)
     }
 
+    /// --background (the in-app updater) with a sudoers rule that already
+    /// works: no password step at all, and the bundle is installed.
+    func testBackgroundInstallKeepsAWorkingSudoersRuleAndAsksForNoPassword() throws {
+        try fx.prepareInstall()
+        let prebuilt = try fx.writePrebuiltApp()
+        fx.setMode("launchctl", "loaded")
+
+        let r = try fx.run(fx.installRedirected, ["--allow-unverified-origin", "--app", prebuilt.path, "--background"], extraEnvironment: ["USER": "tester"])
+
+        XCTAssertEqual(r.status, 0, r.stderr + r.stdout)
+        let calls = fx.calls()
+        XCTAssertFalse(calls.contains { $0.hasPrefix("sudo visudo") || $0.hasPrefix("sudo -A") || $0.hasPrefix("sudo install") }, "no password step: \(calls)")
+        XCTAssertTrue(r.stdout.contains("the rule already works; no password needed"), r.stdout)
+        XCTAssertEqual(try String(contentsOf: fx.app.appendingPathComponent("Contents/MacOS/Ansomnia"), encoding: .utf8), "prebuilt")
+    }
+
+    /// --background with no working rule: it is written through
+    /// $SUDO_ASKPASS (`sudo -A`), never a terminal prompt, then checked.
+    func testBackgroundInstallWritesAMissingRuleThroughTheAskpassHelper() throws {
+        try fx.prepareInstall()
+        let prebuilt = try fx.writePrebuiltApp()
+        fx.setMode("launchctl", "loaded")
+        fx.setMode("sudo", "rule-until-written")
+
+        let r = try fx.run(fx.installRedirected, ["--allow-unverified-origin", "--app", prebuilt.path, "--background"], extraEnvironment: ["USER": "tester", "SUDO_ASKPASS": "/usr/bin/true"])
+
+        XCTAssertEqual(r.status, 0, r.stderr + r.stdout)
+        let calls = fx.calls()
+        XCTAssertTrue(calls.contains { $0.hasPrefix("sudo -A visudo -cf ") }, "\(calls)")
+        XCTAssertTrue(calls.contains { $0.hasPrefix("sudo -A install -m 0440 -o root -g wheel ") }, "\(calls)")
+        XCTAssertFalse(calls.contains { $0.hasPrefix("sudo visudo") || $0.hasPrefix("sudo install") }, "no terminal prompt: \(calls)")
+        XCTAssertTrue(try String(contentsOf: fx.sudoers, encoding: .utf8).contains("NOPASSWD: /usr/bin/pmset"))
+        XCTAssertEqual(try String(contentsOf: fx.app.appendingPathComponent("Contents/MacOS/Ansomnia"), encoding: .utf8), "prebuilt")
+    }
+
+    /// --background that must write the rule but has no way to ask for the
+    /// password stops before anything is touched or the app asked to quit.
+    func testBackgroundInstallWithoutAskpassStopsBeforeTouchingAnything() throws {
+        try fx.prepareInstall()
+        try fx.installMachinery()
+        let prebuilt = try fx.writePrebuiltApp()
+        fx.setMode("pgrep", "0\n")
+        fx.setMode("sudo", "rule-until-written")
+
+        let r = try fx.run(fx.installRedirected, ["--allow-unverified-origin", "--app", prebuilt.path, "--background"], extraEnvironment: ["USER": "tester"])
+
+        XCTAssertNotEqual(r.status, 0, r.stdout)
+        let calls = fx.calls()
+        XCTAssertFalse(calls.contains { $0.contains("visudo") || $0.hasPrefix("sudo install") || $0.hasPrefix("sudo -A install") }, "\(calls)")
+        XCTAssertFalse(calls.contains { $0.hasPrefix("osascript") }, "the app was asked to quit: \(calls)")
+        XCTAssertFalse(calls.contains { $0.hasPrefix("launchctl") }, "\(calls)")
+        XCTAssertEqual(try String(contentsOf: fx.app.appendingPathComponent("Contents/MacOS/Ansomnia"), encoding: .utf8), "binary", "old bundle replaced")
+        XCTAssertTrue(r.stderr.contains("SUDO_ASKPASS is not set"), r.stderr)
+        XCTAssertTrue(r.stderr.contains("Nothing was changed"), r.stderr)
+    }
+
+    func testBackgroundAppliesToAPrebuiltInstallOnly() throws {
+        try fx.prepareInstall()
+        let r = try fx.run(fx.installRedirected, ["--background"], extraEnvironment: ["USER": "tester"])
+        XCTAssertEqual(r.status, 2, r.stderr)
+        XCTAssertTrue(r.stderr.contains("--background applies to --app only"), r.stderr)
+        XCTAssertTrue(fx.calls().isEmpty, "\(fx.calls())")
+    }
+
     /// The checks run on a private copy, and that copy is what gets staged
     /// and pinned. A bundle swapped at the --app path while the password
     /// prompt waits (the fake sudo does it during visudo) is never copied in.
@@ -6963,10 +7027,19 @@ private final class ScriptFixture {
         # the command ends instead of racing a wall-clock sleep. On exit they
         # write command.ended = released | watchdog, so a test can tell a
         # command that is still alive (no file) from one that ended, and why.
+        # `-A` (install.sh --background) asks through $SUDO_ASKPASS: refused
+        # without one, otherwise the rest is handled as if typed at a prompt.
+        if [[ "${1:-}" == -A ]]; then
+          [[ -n "${SUDO_ASKPASS:-}" ]] || { echo "sudo: no askpass program specified" >&2; exit 1; }
+          shift
+        fi
         case "${1:-}" in
           -n) if [[ "${2:-}" == -l ]]; then
                 case "$mode" in
                   auth-fail|rule-not-effective) exit 1 ;;
+                  # Mode "rule-until-written": the rule works once a file
+                  # granting pmset is at the fixture's sudoers path.
+                  rule-until-written) grep -q 'NOPASSWD: /usr/bin/pmset' "\(r)/etc/sudoers.d/ansomnia" 2>/dev/null && exit 0; exit 1 ;;
                   rule-gone-under-lock) if lock_held; then exit 1; fi; exit 0 ;;
                   rule-check-hangs) hang_on_term ignore ;;
                   rule-check-hangs-under-lock) if lock_held; then hang_on_term stop; fi; exit 0 ;;

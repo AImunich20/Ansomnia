@@ -114,6 +114,15 @@ final class StatusItemController: NSObject {
         )
         let host = Self.makeHostingView(root)
         host.onRightMouseDown = { [weak self] in self?.showMenu() }
+        host.endButtonFrame = { [weak self] in
+            guard let self, self.manager.isActive else { return nil }
+            return self.model.endButtonFrame
+        }
+        host.onEndPress = { [weak self] pressed in
+            guard let self, self.model.endPressed != pressed else { return }
+            self.model.endPressed = pressed
+        }
+        host.onEnd = { [weak self] in self?.tapToEnd() }
         host.translatesAutoresizingMaskIntoConstraints = true
         // The height follows the button; the width is set from the layout
         // (`retargetWidth`) and never from the button, whose width is the
@@ -849,6 +858,17 @@ final class StatusItemController: NSObject {
 /// on a one-button mouse.
 final class StatusHostingView: NSHostingView<StatusRootView> {
     var onRightMouseDown: (() -> Void)?
+    /// Where the end button (×) is, top-left origin, or nil when there is
+    /// none to click.
+    var endButtonFrame: (() -> CGRect?)?
+    /// The × is held (true) or released or left (false).
+    var onEndPress: ((Bool) -> Void)?
+    /// A click on the × was released over it.
+    var onEnd: (() -> Void)?
+
+    /// How far from the × a press may wander and still end the session on
+    /// release, the slop an AppKit button allows.
+    static let endCancelDistance: CGFloat = 12
 
     override func rightMouseDown(with event: NSEvent) {
         onRightMouseDown?()
@@ -859,6 +879,33 @@ final class StatusHostingView: NSHostingView<StatusRootView> {
             onRightMouseDown?()
             return
         }
+        if let frame = endButtonFrame?(), frame.contains(topLeftPoint(of: event)) {
+            trackEndClick(in: frame)
+            return
+        }
         super.mouseDown(with: event)
+    }
+
+    /// The event's location in this view with a top-left origin, as SwiftUI
+    /// lays the content out.
+    func topLeftPoint(of event: NSEvent) -> CGPoint {
+        let p = convert(event.locationInWindow, from: nil)
+        return isFlipped ? p : CGPoint(x: p.x, y: bounds.height - p.y)
+    }
+
+    /// Follows the press on the × to its mouse-up in a local tracking loop,
+    /// so neither SwiftUI nor the status bar button sees any part of it, and
+    /// ends the session if it is released over the × (with the slop).
+    private func trackEndClick(in frame: CGRect) {
+        let hotZone = frame.insetBy(dx: -Self.endCancelDistance, dy: -Self.endCancelDistance)
+        var inside = true
+        onEndPress?(true)
+        while let next = window?.nextEvent(matching: [.leftMouseUp, .leftMouseDragged]) {
+            inside = hotZone.contains(topLeftPoint(of: next))
+            if next.type == .leftMouseUp { break }
+            onEndPress?(inside)
+        }
+        onEndPress?(false)
+        if inside { onEnd?() }
     }
 }

@@ -302,7 +302,7 @@ final class NoRedirects: NSObject, URLSessionTaskDelegate, @unchecked Sendable {
 /// The "Check for updates" button in Settings > App. Two requests to
 /// GitHub when the user clicks (the Latest release and the first page of
 /// the list) and a report under the button. When a newer stable release
-/// exists, `updater` downloads it and runs its installer in Terminal
+/// exists, `updater` downloads it and runs its installer in the background
 /// (UpdateInstaller). The app never checks on its own.
 @MainActor
 @Observable

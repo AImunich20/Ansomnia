@@ -115,7 +115,53 @@ final class ReleaseWorkflowTests: XCTestCase {
         XCTAssertTrue(script.hasPrefix("#!/bin/bash\n"))
         XCTAssertTrue(script.contains(#"DMG='/Users/o'\''neil/Caches/Ansomnia-1.2.3.dmg'"#), script)
         XCTAssertTrue(script.contains(#"/usr/bin/hdiutil attach -nobrowse -readonly -noautoopen -mountpoint "$MNT" "$DMG""#))
-        XCTAssertTrue(script.contains(#"/bin/bash "$MNT/install.sh" --allow-unverified-origin --app "$MNT/Ansomnia.app""#))
+        // In the background: no terminal to type a password into, so sudo asks
+        // through the dialog helper, and Ansomnia is reopened either way.
+        XCTAssertTrue(script.contains(#"/bin/bash "$MNT/install.sh" --allow-unverified-origin --app "$MNT/Ansomnia.app" --background </dev/null"#), script)
+        XCTAssertTrue(script.contains(#"export SUDO_ASKPASS="$ASKPASS""#), script)
+        XCTAssertTrue(script.contains("with hidden answer"), "the password is not echoed")
+        XCTAssertTrue(script.contains(#"/usr/bin/open "$HOME/Applications/Ansomnia.app""#))
+        XCTAssertFalse(script.contains("Terminal"), script)
+    }
+
+    /// The generated script parses as bash, heredoc and all.
+    func testTheInstallScriptIsValidBash() throws {
+        let version = try XCTUnwrap(SemanticVersion("1.2.3"))
+        let script = UpdateAsset.installScript(dmg: URL(fileURLWithPath: "/tmp/Ansomnia-1.2.3.dmg"), version: version)
+        let file = FileManager.default.temporaryDirectory.appendingPathComponent("ansomnia-install-\(UUID().uuidString).sh")
+        try script.write(to: file, atomically: true, encoding: .utf8)
+        defer { try? FileManager.default.removeItem(at: file) }
+        let bash = Process()
+        bash.executableURL = URL(fileURLWithPath: "/bin/bash")
+        bash.arguments = ["-n", file.path]
+        try bash.run()
+        bash.waitUntilExit()
+        XCTAssertEqual(bash.terminationStatus, 0)
+    }
+
+    /// The updater's installer outlives the app that starts it (the
+    /// installer quits that app), with its output in the log given.
+    func testTheInstallerIsStartedDetachedWithItsOutputInTheLog() throws {
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("ansomnia-detached-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let script = dir.appendingPathComponent("child.sh")
+        try #"echo "session $(/bin/ps -o sess= -p $$) pgid $(/bin/ps -o pgid= -p $$) pid $$"; echo oops >&2"#.write(to: script, atomically: true, encoding: .utf8)
+        let log = dir.appendingPathComponent("logs/update.log")
+        try UpdateInstaller.launchDetached(script: script, log: log)
+        let deadline = Date().addingTimeInterval(5)
+        var text = ""
+        while Date() < deadline {
+            text = (try? String(contentsOf: log, encoding: .utf8)) ?? ""
+            if text.contains("oops") { break }
+            Thread.sleep(forTimeInterval: 0.05)
+        }
+        XCTAssertTrue(text.contains("oops"), "stderr goes to the log too: \(text)")
+        // A session of its own: it leads its own process group.
+        let words = text.split(whereSeparator: \.isWhitespace)
+        let pgid = try XCTUnwrap(words.firstIndex(of: "pgid").map { words[$0 + 1] })
+        let pid = try XCTUnwrap(words.firstIndex(of: "pid").map { words[$0 + 1] })
+        XCTAssertEqual(pgid, pid, text)
     }
 
     /// The release is ad-hoc signed: no signing or notarization step that

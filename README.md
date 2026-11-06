@@ -74,9 +74,12 @@ compare it with `shasum -a 256 ~/Downloads/Ansomnia.dmg`.
 
 Right-click the moon, choose Settings, and under App click **Check for
 updates**. When a newer release exists, **Download and install** fetches its
-DMG from GitHub, checks it against the release's `SHA256SUMS` and runs the
-installer in Terminal. The installer asks for your password, ends any session
-and opens the new version. The app never checks on its own.
+DMG from GitHub, checks it against the release's `SHA256SUMS` and installs it
+in the background, with no Terminal window: Ansomnia ends any session, quits
+and reopens as the new version, and a notification says how it went (details
+in `~/Library/Logs/Ansomnia/update.log`). It asks for your password, in a
+macOS dialog, only if the sleep permission in `/etc/sudoers.d/ansomnia` has
+to be written again. The app never checks on its own.
 
 ### How releases are built
 
@@ -88,6 +91,19 @@ release yet it builds the DMG on a macOS 26 runner with
 Release `v<version>`, marked Latest. To ship a new version, bump the version
 in `Resources/Info.plist` and push. Pushes that keep the version publish
 nothing.
+
+A release can also be built on your own Mac (this needs Xcode), without
+waiting for the workflow:
+
+```bash
+scripts/release-local.sh --install            # test, build dist/, install it here
+scripts/release-local.sh --install --publish  # ...and publish it on GitHub
+```
+
+`--publish` pushes `main` together with the tag `v<version>` in one atomic
+push and uploads the DMG built here, with the same files and notes as the
+workflow. The workflow run that push starts finds the tag and stops, so
+either way ships a version exactly once.
 
 To build the same DMG yourself: `scripts/make-dmg.sh --output dist`.
 

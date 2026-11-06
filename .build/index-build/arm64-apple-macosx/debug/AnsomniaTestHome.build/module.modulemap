@@ -1,4 +1,0 @@
-module AnsomniaTestHome {
-    umbrella header "/Users/maybe/github/Ansomnia/Tests/AnsomniaTestHome/include/AnsomniaTestHome.h"
-    export *
-}

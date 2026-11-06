@@ -81,7 +81,12 @@ struct StatusRootView: View {
             } else if showsCountdown {
                 countdown
                 if showsRunningControls {
-                    EndSessionButton(reduceMotion: reduceMotion, action: onEndTap)
+                    EndSessionButton(
+                        reduceMotion: reduceMotion,
+                        pressed: model.endPressed,
+                        action: onEndTap,
+                        frameReported: { [model] frame in model.endButtonFrame = frame }
+                    )
                         .transition(Motion.ringTransition(reduceMotion: reduceMotion))
                 }
             }
@@ -102,7 +107,12 @@ struct StatusRootView: View {
         // The host is kept as wide as the widest content it has held, so the
         // content must sit at its leading edge rather than centred in it.
         .frame(maxWidth: .infinity, alignment: .leading)
+        // The host view's own bounds, top-left origin: where the × reports
+        // its frame for `StatusHostingView` to hit-test clicks against.
+        .coordinateSpace(.named(Self.coordinateSpace))
     }
+
+    static let coordinateSpace = "ansomnia.status.root"
 
     /// A crescent moon while idle; slashed through while sleep is held, so
     /// the app visibly does something even when Low Power Mode is not showing.

@@ -106,6 +106,27 @@ unticked builds and packages the chosen branch and uploads the zip and
 so it is the way to try the pipeline and to get the build that step 2
 tests.
 
+## Releasing from your Mac
+
+`scripts/release-local.sh` builds the same DMG on your own Mac, so a version
+can be installed and shipped without waiting for the Release workflow. It
+needs Xcode (the Command Line Tools alone cannot build the app: SwiftUI's
+macros ship with Xcode).
+
+```bash
+scripts/release-local.sh                      # swift test, then dist/Ansomnia-<version>.dmg
+scripts/release-local.sh --install            # ...and install it on this Mac
+scripts/release-local.sh --install --publish  # ...and publish v<version> on GitHub
+```
+
+`--publish` checks first that the working tree is clean, `main` holds
+`origin/main`, `gh` is signed in and `v<version>` is not taken. It then
+pushes `main` and the tag in one atomic push and runs `gh release create`
+with the DMG, `Ansomnia.dmg`, `SHA256SUMS` and the workflow's notes. The
+workflow run that the push starts finds the tag and stops, so a version is
+built and published once, by whichever path ran. Pushing a bumped version
+without running the script still has the workflow publish it.
+
 ## Nightly prereleases
 
 The schedule runs the workflow on `main` once a day. A first job, with

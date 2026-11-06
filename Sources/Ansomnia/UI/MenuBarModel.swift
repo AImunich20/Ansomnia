@@ -1,3 +1,4 @@
+import CoreGraphics
 import Foundation
 import Observation
 
@@ -89,6 +90,14 @@ final class MenuBarModel {
     /// The session a pending start will become; the controller ticks
     /// `pendingCountdown` off it at 1 Hz while the phase is `.starting`.
     var pendingProjection: StartProjection?
+
+    /// The end button (×) in the host view's coordinates (top-left origin),
+    /// nil while it is not shown. The host view reads it to take a click on
+    /// the × itself, in AppKit, before SwiftUI or the status bar button can
+    /// claim it. Not observed: nothing is drawn from it.
+    @ObservationIgnored var endButtonFrame: CGRect?
+    /// The × is held down, the pointer still over it.
+    var endPressed: Bool = false
 
     // Animation triggers. Views run a bounce whenever one of these changes.
     var iconBounce: Int = 0

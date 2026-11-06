@@ -30,6 +30,14 @@
 #                                             zip to this repository. Nothing
 #                                             of this checkout is needed then;
 #                                             the zip carries this script.
+#   --background                              (with --app) for the in-app
+#                                             updater, which runs this with no
+#                                             Terminal: when the sudoers rule
+#                                             already works the password step
+#                                             is skipped, and when it must be
+#                                             written sudo asks through
+#                                             $SUDO_ASKPASS (a macOS password
+#                                             dialog) instead of a terminal.
 # Either way the bundle is checked before the password prompt, so a bad build
 # or download changes nothing.
 set -euo pipefail
@@ -108,7 +116,7 @@ CANDIDATE_DIR=""
 WORK=""
 
 step() { printf '\n==> %s\n' "$*"; }
-usage() { echo "usage: $0 [--app /path/to/Ansomnia.app [--allow-unverified-origin]]" >&2; }
+usage() { echo "usage: $0 [--app /path/to/Ansomnia.app [--allow-unverified-origin] [--background]]" >&2; }
 # A command for the user to paste, each word quoted for the shell, so a space,
 # quote or $ in a path stays part of that path.
 command_line() { local line; line="$(printf '%q ' "$@")"; printf '%s' "${line% }"; }
@@ -225,14 +233,21 @@ loaded_state() { # -> yes | no | unknown:<rc>
 
 PREBUILT=""
 ALLOW_UNVERIFIED_ORIGIN=0
+BACKGROUND=0
 while (( $# )); do
   case "$1" in
     --app) [[ $# -ge 2 ]] || { usage; exit 2; }; PREBUILT="$2"; shift 2 ;;
     --allow-unverified-origin) ALLOW_UNVERIFIED_ORIGIN=1; shift ;;
+    --background) BACKGROUND=1; shift ;;
     -h|--help) usage; exit 0 ;;
     *) echo "unknown argument: $1" >&2; usage; exit 2 ;;
   esac
 done
+if (( BACKGROUND )) && [[ -z "$PREBUILT" ]]; then
+  echo "--background applies to --app only (the in-app updater's install)." >&2
+  usage
+  exit 2
+fi
 if (( ALLOW_UNVERIFIED_ORIGIN )) && [[ -z "$PREBUILT" ]]; then
   echo "--allow-unverified-origin applies to --app only; a source build has no download to vouch for." >&2
   usage
@@ -442,20 +457,39 @@ fi
 #    The password prompt comes first: until the rule is installed and proven
 #    effective, the running app is not asked to quit and neither the bundle
 #    (backstop.sh included) nor the LaunchAgent are touched.
-step "Writing $SUDOERS (requires your password once)"
-TMP_SUDOERS="$("$MKTEMP")"
-cat > "$TMP_SUDOERS" <<SUDO
+# In the background (the in-app updater) a rule that already grants the
+# four commands is left as it is, so an update asks for no password; one
+# that must be written asks through $SUDO_ASKPASS, as there is no terminal.
+SUDO_PROMPT=("$SUDO")
+write_sudoers=1
+if (( BACKGROUND )); then
+  if pmset_rule_effective; then
+    write_sudoers=0
+  elif [[ -z "${SUDO_ASKPASS:-}" ]]; then
+    echo "--background: the sudoers rule must be written but SUDO_ASKPASS is not set, so there is no way to ask for the password. Nothing was changed." >&2
+    exit 1
+  else
+    SUDO_PROMPT=("$SUDO" -A)
+  fi
+fi
+if (( write_sudoers )); then
+  step "Writing $SUDOERS (requires your password once)"
+  TMP_SUDOERS="$("$MKTEMP")"
+  cat > "$TMP_SUDOERS" <<SUDO
 # Installed by Ansomnia install.sh. Exactly four commands, nothing else.
 $USER ALL=(root) NOPASSWD: /usr/bin/pmset -a disablesleep 1
 $USER ALL=(root) NOPASSWD: /usr/bin/pmset -a disablesleep 0
 $USER ALL=(root) NOPASSWD: /usr/bin/pmset -b lowpowermode 1
 $USER ALL=(root) NOPASSWD: /usr/bin/pmset -b lowpowermode 0
 SUDO
-if "$SUDO" visudo -cf "$TMP_SUDOERS" >/dev/null; then
-  "$SUDO" install -m 0440 -o root -g wheel "$TMP_SUDOERS" "$SUDOERS"
+  if "${SUDO_PROMPT[@]}" visudo -cf "$TMP_SUDOERS" >/dev/null; then
+    "${SUDO_PROMPT[@]}" install -m 0440 -o root -g wheel "$TMP_SUDOERS" "$SUDOERS"
+  else
+    echo "sudoers file failed validation (or sudo did not authenticate); not installed. Nothing was changed." >&2
+    exit 1
+  fi
 else
-  echo "sudoers file failed validation (or sudo did not authenticate); not installed. Nothing was changed." >&2
-  exit 1
+  step "Keeping $SUDOERS (the rule already works; no password needed)"
 fi
 # The backstop cannot undo anything without the rule, so stop here. Checked
 # again once this run holds the recovery lock (step 5).

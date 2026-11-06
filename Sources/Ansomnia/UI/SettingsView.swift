@@ -510,7 +510,7 @@ struct SettingsView: View {
 
     /// The update check: one request to GitHub's releases list per click,
     /// and the report under the buttons. When a newer stable release
-    /// exists, a button downloads it and runs its installer in Terminal.
+    /// exists, a button downloads it and runs its installer in the background.
     @ViewBuilder
     private var releaseCheck: some View {
         HStack {
@@ -541,8 +541,8 @@ struct SettingsView: View {
     }
 
     /// "Download and install": the DMG of `version` from GitHub, checked
-    /// against SHA256SUMS, then its installer in a Terminal window, which
-    /// asks for the password, quits this app and opens the new one.
+    /// against SHA256SUMS, then its installer in the background, which
+    /// quits this app and opens the new one.
     @ViewBuilder
     private func updateInstall(_ version: SemanticVersion) -> some View {
         let updater = releases.updater
@@ -550,11 +550,11 @@ struct SettingsView: View {
             .disabled(updater.isBusy)
         switch updater.state {
         case .idle, .downloading:
-            Text("Downloads the DMG from GitHub, checks its SHA-256 and opens the installer in Terminal. The installer asks for your password, ends any session and restarts Ansomnia.")
+            Text("Downloads the DMG from GitHub, checks its SHA-256 and installs it in the background. Ends any session and restarts Ansomnia; asks for your password only if the sleep permission has to be written again.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-        case let .handedToTerminal(installing):
-            Text("The installer for \(installing) is running in Terminal. Follow it there.")
+        case let .installing(version):
+            Text("Installing \(version). Ansomnia will quit and reopen by itself.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         case let .failed(reason):
