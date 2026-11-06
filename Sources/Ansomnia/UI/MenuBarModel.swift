@@ -92,8 +92,8 @@ final class MenuBarModel {
     var pendingProjection: StartProjection?
 
     /// The end button (×) in the host view's coordinates (top-left origin),
-    /// nil while it is not shown. The host view reads it to take a click on
-    /// the × itself, in AppKit, before SwiftUI or the status bar button can
+    /// nil while it is not shown. The controller's event monitor reads it to
+    /// take a click on the × before SwiftUI or the status bar button can
     /// claim it. Not observed: nothing is drawn from it.
     @ObservationIgnored var endButtonFrame: CGRect?
     /// The × is held down, the pointer still over it.

@@ -4,12 +4,13 @@ import SwiftUI
 /// click ends the session.
 ///
 /// The click is not a SwiftUI gesture: inside a status item a gesture can
-/// lose the mouse-up to the status bar button, which left the × showing its
+/// lose the click to the status bar button, which left the × showing its
 /// press and doing nothing, or passed the click on to the mark beside it.
-/// `StatusHostingView` takes any click inside `frameReported` itself and
-/// tracks it to mouse-up, the way an AppKit button does: dragging away
-/// before releasing cancels it. This view only draws the hover and the press
-/// it is told about, and reports where it is.
+/// `StatusItemController` takes any click inside `frameReported` in a local
+/// event monitor, before the rest of the app sees it, and tracks it to
+/// mouse-up the way an AppKit button does (`EndClickTracker`). This view
+/// only draws the hover and the press it is told about, and reports where
+/// it is.
 struct EndSessionButton: View {
     let reduceMotion: Bool
     let pressed: Bool

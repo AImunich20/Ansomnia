@@ -38,6 +38,10 @@ final class StatusItemController: NSObject {
 
     private var keyMonitor: Any?
     private var localMouseMonitor: Any?
+    /// Takes left clicks on the end button (×) before anything else in the
+    /// app sees them; see `EndClickTracker`.
+    private var endClickMonitor: Any?
+    private var endClick = EndClickTracker()
     private var globalMouseMonitor: Any?
     /// Holds keyboard focus while the pills are open; see `KeyCatcherPanel`.
     private var keyCatcher: KeyCatcherPanel?
@@ -114,15 +118,11 @@ final class StatusItemController: NSObject {
         )
         let host = Self.makeHostingView(root)
         host.onRightMouseDown = { [weak self] in self?.showMenu() }
-        host.endButtonFrame = { [weak self] in
-            guard let self, self.manager.isActive else { return nil }
-            return self.model.endButtonFrame
+        endClickMonitor = NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown, .leftMouseDragged, .leftMouseUp]) { [weak self] event in
+            // Local monitors always run on the main thread.
+            let swallow = MainActor.assumeIsolated { self?.swallowsEndClick(event) ?? false }
+            return swallow ? nil : event
         }
-        host.onEndPress = { [weak self] pressed in
-            guard let self, self.model.endPressed != pressed else { return }
-            self.model.endPressed = pressed
-        }
-        host.onEnd = { [weak self] in self?.tapToEnd() }
         host.translatesAutoresizingMaskIntoConstraints = true
         // The height follows the button; the width is set from the layout
         // (`retargetWidth`) and never from the button, whose width is the
@@ -214,6 +214,55 @@ final class StatusItemController: NSObject {
     }
 
     private var button: NSStatusBarButton? { statusItem.button }
+
+    /// A left mouse event on its way into the app: the ones that make up a
+    /// click on the × are handled here and swallowed (true); every other
+    /// event goes on as it was. A local monitor sees the event before the
+    /// status bar button, SwiftUI's gestures or any view does, so none of
+    /// them can take the click from the ×, which is what kept it from
+    /// ending sessions.
+    /// Where a click ends the session: the frame the × reports, joined
+    /// with where the layout puts it (the last `endButtonSlot` points before
+    /// the trailing inset of the bar), so a frame not yet reported, or one
+    /// reported in a space the click is not measured in, still leaves the ×
+    /// clickable. Nil when no session is running or the × is not shown.
+    private func endButtonHitFrame(hostHeight: CGFloat) -> CGRect? {
+        guard manager.isActive, model.phase.showsRunningControls, !model.slotsPresent else { return nil }
+        let laidOut = Self.endButtonLayoutFrame(barWidth: widthTarget, height: hostHeight)
+        guard let reported = model.endButtonFrame else { return laidOut }
+        return reported.union(laidOut)
+    }
+
+    /// The × as the layout places it in a bar `barWidth` wide: 20 points
+    /// square, the bar's last, before its 6 point trailing inset.
+    static func endButtonLayoutFrame(barWidth: CGFloat, height: CGFloat) -> CGRect {
+        let slot: CGFloat = 20, trailingInset: CGFloat = 6
+        return CGRect(x: barWidth - trailingInset - slot, y: 0, width: slot, height: height)
+    }
+
+    private func swallowsEndClick(_ event: NSEvent) -> Bool {
+        guard let host = hostingView, event.window != nil, event.window === host.window || endClick.isTracking else {
+            return false
+        }
+        let frame = endButtonHitFrame(hostHeight: host.bounds.height)
+        let point = host.topLeftPoint(of: event)
+        let kind: EndClickTracker.Kind
+        switch event.type {
+        case .leftMouseDown:
+            if event.modifierFlags.contains(.control) { return false }
+            kind = .down
+            if manager.isActive {
+                Log.info("status click at \(Int(point.x)),\(Int(point.y)); end button \(frame.map { NSStringFromRect($0) } ?? "none"), reported \(model.endButtonFrame.map { NSStringFromRect($0) } ?? "none")")
+            }
+        case .leftMouseDragged: kind = .dragged
+        case .leftMouseUp: kind = .up
+        default: return false
+        }
+        let result = endClick.handle(kind, at: point, endButton: frame)
+        if let pressed = result.pressed, model.endPressed != pressed { model.endPressed = pressed }
+        if result.end { tapToEnd() }
+        return result.swallow
+    }
 
     private var reduceMotion: Bool { Motion.reduceMotion }
 
@@ -858,17 +907,6 @@ final class StatusItemController: NSObject {
 /// on a one-button mouse.
 final class StatusHostingView: NSHostingView<StatusRootView> {
     var onRightMouseDown: (() -> Void)?
-    /// Where the end button (×) is, top-left origin, or nil when there is
-    /// none to click.
-    var endButtonFrame: (() -> CGRect?)?
-    /// The × is held (true) or released or left (false).
-    var onEndPress: ((Bool) -> Void)?
-    /// A click on the × was released over it.
-    var onEnd: (() -> Void)?
-
-    /// How far from the × a press may wander and still end the session on
-    /// release, the slop an AppKit button allows.
-    static let endCancelDistance: CGFloat = 12
 
     override func rightMouseDown(with event: NSEvent) {
         onRightMouseDown?()
@@ -877,10 +915,6 @@ final class StatusHostingView: NSHostingView<StatusRootView> {
     override func mouseDown(with event: NSEvent) {
         if event.modifierFlags.contains(.control) {
             onRightMouseDown?()
-            return
-        }
-        if let frame = endButtonFrame?(), frame.contains(topLeftPoint(of: event)) {
-            trackEndClick(in: frame)
             return
         }
         super.mouseDown(with: event)
@@ -892,20 +926,54 @@ final class StatusHostingView: NSHostingView<StatusRootView> {
         let p = convert(event.locationInWindow, from: nil)
         return isFlipped ? p : CGPoint(x: p.x, y: bounds.height - p.y)
     }
+}
 
-    /// Follows the press on the × to its mouse-up in a local tracking loop,
-    /// so neither SwiftUI nor the status bar button sees any part of it, and
-    /// ends the session if it is released over the × (with the slop).
-    private func trackEndClick(in frame: CGRect) {
-        let hotZone = frame.insetBy(dx: -Self.endCancelDistance, dy: -Self.endCancelDistance)
-        var inside = true
-        onEndPress?(true)
-        while let next = window?.nextEvent(matching: [.leftMouseUp, .leftMouseDragged]) {
-            inside = hotZone.contains(topLeftPoint(of: next))
-            if next.type == .leftMouseUp { break }
-            onEndPress?(inside)
+/// A click on the end button (×), followed event by event: a press on it
+/// shows it pressed, dragging away (past `cancelDistance`) or back updates
+/// that, and releasing over it ends the session, the way an AppKit button
+/// behaves. Every event of such a click is swallowed, so the status bar
+/// button and SwiftUI never see half of it. Pure, so it is tested without
+/// a menu bar.
+struct EndClickTracker {
+    enum Kind { case down, dragged, up }
+
+    struct Result: Equatable {
+        /// Keep the event from the rest of the app.
+        var swallow: Bool
+        /// The × should now be drawn pressed (true) or not (false); nil leaves it.
+        var pressed: Bool?
+        /// End the session.
+        var end: Bool
+    }
+
+    /// How far from the × a press may wander and still end the session on
+    /// release, the slop an AppKit button allows.
+    static let cancelDistance: CGFloat = 12
+
+    private var tracked: CGRect?
+
+    var isTracking: Bool { tracked != nil }
+
+    mutating func handle(_ kind: Kind, at point: CGPoint, endButton: CGRect?) -> Result {
+        switch kind {
+        case .down:
+            guard let frame = endButton, frame.contains(point) else {
+                tracked = nil
+                return Result(swallow: false, pressed: nil, end: false)
+            }
+            tracked = frame
+            return Result(swallow: true, pressed: true, end: false)
+        case .dragged:
+            guard let frame = tracked else { return Result(swallow: false, pressed: nil, end: false) }
+            return Result(swallow: true, pressed: Self.hotZone(frame).contains(point), end: false)
+        case .up:
+            guard let frame = tracked else { return Result(swallow: false, pressed: nil, end: false) }
+            tracked = nil
+            return Result(swallow: true, pressed: false, end: Self.hotZone(frame).contains(point))
         }
-        onEndPress?(false)
-        if inside { onEnd?() }
+    }
+
+    private static func hotZone(_ frame: CGRect) -> CGRect {
+        frame.insetBy(dx: -cancelDistance, dy: -cancelDistance)
     }
 }
