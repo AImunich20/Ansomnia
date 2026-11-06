@@ -4,118 +4,120 @@ import XCTest
 @testable import Ansomnia
 
 /// The marks, checked on rendered geometry. The app icon: the menu bar's
-/// open eye (`EyeMarkGeometry` at progress 1) on the charcoal tile, the pupil
-/// on the axis inside the lens, nothing touching the outline, the drawn mark
-/// centred on the tile, and no lashes at any size (a minimal mark). The menu
-/// bar's eye: shaded shut with lashes below while idle, open with a pupil
-/// and lashes above while running, monochrome in both states.
+/// running mark, the crescent moon of `MoonMarkGeometry` with the slash
+/// through it, on the charcoal tile, the slash cutting its own gap in the
+/// crescent and the drawn mark centred on the tile. The menu bar's mark: the
+/// plain crescent while idle, slashed while running, monochrome in both.
 final class BrandingTests: XCTestCase {
-    private let grid = CGRect(x: 0, y: 0, width: EyeLensGeometry.designSize, height: EyeLensGeometry.designSize)
+    private let grid = CGRect(x: 0, y: 0, width: MoonMarkGeometry.designSize, height: MoonMarkGeometry.designSize)
 
-    func testThePupilSitsOnTheAxisInsideTheLensAndNothingTouchesTheOutline() {
-        let lens = EyeMarkGeometry.lens(in: grid)
-        XCTAssertEqual(EyeMarkGeometry.pupilCenter.y, EyeMarkGeometry.axisY, "the pupil is centred on the eye's axis")
-        XCTAssertEqual(EyeMarkGeometry.pupilCenter.x, lens.boundingBoxOfPath.midX, accuracy: 0.001, "the pupil is centred between the corners")
+    // MARK: - Geometry
 
-        // Rendered at the app icon's smallest size that keeps the lashes:
-        // the pupil fills the inside of the lens and the lashes stand
-        // outside it, and neither shares a pixel with the outline.
-        let size = 96
-        let rect = CGRect(x: 0, y: 0, width: size, height: size)
-        let eye = EyeMarkGeometry.lens(in: rect)
-        let width = EyeLensGeometry.lineWidth(for: CGFloat(size))
-        let outline = Raster(size: size) { ctx in
-            ctx.addPath(eye)
-            ctx.setLineWidth(width)
-            ctx.strokePath()
+    /// The crescent is one closed outline whose horns sit on both circles,
+    /// mirror images across the bite's axis; the slash is one open line
+    /// along that axis through the grid's centre.
+    func testTheCrescentAndTheSlashAreOneLineEachAboutTheBitesAxis() {
+        let (p, q) = MoonMarkGeometry.horns
+        for horn in [p, q] {
+            XCTAssertEqual(distance(horn, MoonMarkGeometry.moonCenter), MoonMarkGeometry.moonRadius, accuracy: 0.001)
+            XCTAssertEqual(distance(horn, MoonMarkGeometry.biteCenter), MoonMarkGeometry.biteRadius, accuracy: 0.001)
         }
-        let pupil = Raster(size: size) { ctx in
-            ctx.addPath(EyeMarkGeometry.pupil(in: rect))
-            ctx.fillPath()
-        }
-        let lashes = Raster(size: size) { ctx in
-            ctx.addPath(EyeMarkGeometry.lashes(in: rect, side: .above))
-            ctx.setLineWidth(width)
-            ctx.setLineCap(.round)
-            ctx.strokePath()
-        }
-        var pupilPixels = 0, pupilOnOutline = 0, pupilOutsideEye = 0
-        var lashPixels = 0, lashOnOutline = 0, lashInsideEye = 0
-        for y in 0..<size {
-            for x in 0..<size {
-                let centre = CGPoint(x: CGFloat(x) + 0.5, y: CGFloat(y) + 0.5)
-                if pupil.alpha(x, y) > 0.5 {
-                    pupilPixels += 1
-                    if outline.alpha(x, y) > 0.05 { pupilOnOutline += 1 }
-                    if !eye.contains(centre) { pupilOutsideEye += 1 }
-                }
-                if lashes.alpha(x, y) > 0.5 {
-                    lashPixels += 1
-                    if outline.alpha(x, y) > 0.05 { lashOnOutline += 1 }
-                    if eye.contains(centre) { lashInsideEye += 1 }
-                }
-            }
-        }
-        XCTAssertGreaterThan(pupilPixels, size * size / 40, "the pupil is a solid disc, not a dot")
-        XCTAssertEqual(pupilOnOutline, 0, "the pupil must not touch the eye outline")
-        XCTAssertEqual(pupilOutsideEye, 0, "the pupil must sit inside the eye")
-        XCTAssertGreaterThan(lashPixels, 5 * size / 8, "five lashes are drawn")
-        XCTAssertEqual(lashOnOutline, 0, "the lashes must not touch the eye outline")
-        XCTAssertEqual(lashInsideEye, 0, "the lashes stand outside the eye")
-        // Only the outline, the pupil and the lashes: one closed outline, one closed pupil, five open lashes.
-        XCTAssertEqual(subpathCount(eye), 1)
-        XCTAssertEqual(subpathCount(EyeMarkGeometry.pupil(in: rect)), 1)
-        XCTAssertEqual(subpathCount(EyeMarkGeometry.lashes(in: rect, side: .above)), 5)
+        // Mirrored across the line y = 24 - x, which carries the bite's axis and the slash.
+        XCTAssertEqual(p.x, 24 - q.y, accuracy: 0.001)
+        XCTAssertEqual(p.y, 24 - q.x, accuracy: 0.001)
+        XCTAssertEqual(MoonMarkGeometry.biteCenter.x + MoonMarkGeometry.biteCenter.y, 24, accuracy: 0.001, "the bite sits on the slash's line")
+        let slash = MoonMarkGeometry.slash(in: grid)
+        let box = slash.boundingBoxOfPath
+        XCTAssertEqual(box.midX, 12, accuracy: 0.001)
+        XCTAssertEqual(box.midY, 12, accuracy: 0.001)
+        XCTAssertEqual(subpathCount(MoonMarkGeometry.crescent(in: grid)), 1)
+        XCTAssertEqual(subpathCount(slash), 1)
+        XCTAssertFalse(AppIconArtwork.pathData(slash).contains("Z"), "the slash is an open line")
+        XCTAssertTrue(AppIconArtwork.pathData(MoonMarkGeometry.crescent(in: grid)).hasSuffix("Z"), "the crescent is closed")
     }
 
-    /// Pixel for pixel, the icon's ink is the open menu bar eye reduced to
-    /// the lens and the pupil of `EyeMarkGeometry` at progress 1, in the
-    /// icon's mark square, and nothing else (the lid at progress 1 draws
-    /// nothing, and neither the upper nor the lower lashes are there).
-    func testTheIconDrawsTheOpenMenuBarEyeAndNothingElse() throws {
-        let pixels = 256
-        let icon = try XCTUnwrap(AppIconArtwork.render(pixels: pixels))
-        let drawn = IconPixels(icon)
-        let scale = CGFloat(pixels) / AppIconArtwork.canvas
-        let mark = AppIconArtwork.mark
-        let expected = Raster(size: pixels) { ctx in
-            ctx.scaleBy(x: scale, y: scale)
-            ctx.setLineWidth(EyeLensGeometry.lineWidth(for: mark.width))
-            ctx.setLineCap(.round)
-            ctx.setLineJoin(.round)
-            ctx.addPath(EyeMarkGeometry.lens(in: mark))
-            ctx.strokePath()
-            ctx.addPath(EyeMarkGeometry.pupil(in: mark))
-            ctx.fillPath()
-            ctx.addPath(EyeMarkGeometry.lid(in: mark, progress: 1))
-            ctx.fillPath()
-        }
-        // Half way between the tile and the ink is half coverage, where the
-        // expected raster's alpha is also half; a few edge pixels can round
-        // either way, nothing more.
-        let halfInk = (luminance(BrandPalette.midnight) + luminance(BrandPalette.moonWhite)) / 2
-        var ink = 0, mismatches = 0
-        for y in 0..<pixels {
-            for x in 0..<pixels {
-                let isInk = drawn.alpha(x, y) > 0.99 && drawn.luminance(x, y) > halfInk
-                if isInk { ink += 1 }
-                if isInk != (expected.alpha(x, y) > 0.5) { mismatches += 1 }
+    /// The crescent is the moon's disc with the bite taken out: inside the
+    /// one and outside the other, and filled it is neither empty nor whole.
+    func testTheCrescentIsTheMoonWithTheBiteTakenOut() {
+        let crescent = MoonMarkGeometry.crescent(in: grid)
+        var inside = 0
+        for y in stride(from: CGFloat(0.25), to: 24, by: 0.5) {
+            for x in stride(from: CGFloat(0.25), to: 24, by: 0.5) {
+                let point = CGPoint(x: x, y: y)
+                let inMoon = distance(point, MoonMarkGeometry.moonCenter) < MoonMarkGeometry.moonRadius - 0.05
+                let inBite = distance(point, MoonMarkGeometry.biteCenter) < MoonMarkGeometry.biteRadius - 0.05
+                let outMoon = distance(point, MoonMarkGeometry.moonCenter) > MoonMarkGeometry.moonRadius + 0.05
+                let outBite = distance(point, MoonMarkGeometry.biteCenter) > MoonMarkGeometry.biteRadius + 0.05
+                if inMoon && outBite { XCTAssertTrue(crescent.contains(point), "\(point) is on the crescent") }
+                if outMoon || inBite { XCTAssertFalse(crescent.contains(point), "\(point) is off the crescent") }
+                if crescent.contains(point) { inside += 1 }
             }
         }
-        XCTAssertGreaterThan(ink, pixels * pixels / 50, "the mark is drawn")
-        XCTAssertLessThanOrEqual(mismatches, pixels * pixels / 2000, "the icon's ink differs from the open eye at \(mismatches) of \(pixels * pixels) pixels")
+        XCTAssertGreaterThan(inside, 2304 / 8, "the crescent has body")
+        XCTAssertLessThan(inside, 2304 / 3, "the crescent is not the whole moon")
+    }
 
-        // And no lashes, above or below the eye.
-        for side in [EyeMarkGeometry.Side.above, .below] {
-            for point in points(of: EyeMarkGeometry.lashes(in: mark, side: side)) {
-                let x = Int(point.x * scale), y = Int(point.y * scale)
-                XCTAssertLessThan(drawn.luminance(x, y), 0.3, "no lash \(side) the icon's eye at \(point)")
+    func testTheStrokedMarkFitsInsideTheSeventeenPointFrame() {
+        let frame = CGRect(x: 0, y: 0, width: 17, height: 17)
+        let width = MoonMarkGeometry.lineWidth(for: frame.width)
+        let stroked = CGMutablePath()
+        for path in [MoonMarkGeometry.crescent(in: frame), MoonMarkGeometry.slash(in: frame)] {
+            stroked.addPath(path.copy(strokingWithWidth: width, lineCap: .round, lineJoin: .round, miterLimit: 10))
+        }
+        let box = stroked.boundingBoxOfPath
+        // Enough headroom that a sub-pixel rasteriser does not clip the caps.
+        let headroom = 0.4 * frame.width / MoonMarkGeometry.designSize
+        XCTAssertTrue(frame.insetBy(dx: headroom, dy: headroom).contains(box), "the view's frame clips the mark: \(box)")
+    }
+
+    // MARK: - The app icon
+
+    /// Pixel for pixel, the icon's ink is the crescent with a gap cut along
+    /// the slash, and the slash in it, in the icon's mark square, and
+    /// nothing else.
+    func testTheIconDrawsTheSlashedMoonAndNothingElse() throws {
+        for pixels in [256, 16] {
+            let drawn = IconPixels(try XCTUnwrap(AppIconArtwork.render(pixels: pixels)))
+            let scale = CGFloat(pixels) / AppIconArtwork.canvas
+            let mark = AppIconArtwork.mark
+            let line = max(MoonMarkGeometry.lineWidth(for: mark.width), AppIconArtwork.minimumStrokePixels / scale)
+            let gap = line + MoonMarkGeometry.gapWidth(for: mark.width) - MoonMarkGeometry.lineWidth(for: mark.width)
+            let expected = Raster(size: pixels) { ctx in
+                ctx.scaleBy(x: scale, y: scale)
+                ctx.setLineCap(.round)
+                ctx.setLineJoin(.round)
+                ctx.setLineWidth(line)
+                ctx.addPath(MoonMarkGeometry.crescent(in: mark))
+                ctx.strokePath()
+                ctx.setBlendMode(.clear)
+                ctx.setLineWidth(gap)
+                ctx.addPath(MoonMarkGeometry.slash(in: mark))
+                ctx.strokePath()
+                ctx.setBlendMode(.normal)
+                ctx.setLineWidth(line)
+                ctx.addPath(MoonMarkGeometry.slash(in: mark))
+                ctx.strokePath()
             }
+            // Coverage against coverage, not each against a half-way
+            // threshold: at 16 pixels most of the ink is edge pixels.
+            let tileInk = luminance(BrandPalette.midnight), markInk = luminance(BrandPalette.moonWhite)
+            var mismatches = 0
+            var weight: CGFloat = 0
+            for y in 0..<pixels {
+                for x in 0..<pixels where drawn.alpha(x, y) > 0.99 {
+                    let coverage = min(max((drawn.luminance(x, y) - tileInk) / (markInk - tileInk), 0), 1)
+                    if abs(coverage - expected.alpha(x, y)) > 0.1 { mismatches += 1 }
+                    weight += coverage
+                }
+            }
+            XCTAssertGreaterThan(weight, CGFloat(pixels * pixels) / 60, "the mark is drawn at \(pixels) pixels")
+            XCTAssertLessThanOrEqual(mismatches, pixels * pixels / 2000, "the \(pixels)px icon differs from the slashed moon at \(mismatches) pixels")
         }
     }
 
     /// The 24-unit grid is 76% of the tile and centred on it, and so is
-    /// what is drawn: the lens and the pupil are symmetric about the axis.
+    /// what is drawn: the slash runs corner to corner through the grid's
+    /// centre and the crescent lies within its reach.
     func testTheMarkKeepsItsShareOfTheTileAndItsInkIsCentredOnIt() {
         let tile = AppIconArtwork.tile
         let mark = AppIconArtwork.mark
@@ -124,352 +126,95 @@ final class BrandingTests: XCTestCase {
         XCTAssertEqual(mark.midX, tile.midX, accuracy: 0.001)
         XCTAssertEqual(mark.midY, tile.midY, accuracy: 0.001)
         let inked = AppIconArtwork.inked(in: mark)
-        XCTAssertEqual(inked.midX, tile.midX, accuracy: 0.01, "the ink is centred across the tile")
-        XCTAssertEqual(inked.midY, tile.midY, accuracy: 0.01, "the ink is centred down the tile")
+        // Within a twentieth of a canvas unit: CoreGraphics draws the arcs
+        // as cubics, whose bounds stray from the circles' by a hair.
+        XCTAssertEqual(inked.midX, tile.midX, accuracy: 0.05, "the ink is centred across the tile")
+        XCTAssertEqual(inked.midY, tile.midY, accuracy: 0.05, "the ink is centred down the tile")
         XCTAssertTrue(tile.insetBy(dx: 40, dy: 40).contains(inked), "the ink stays well inside the tile: \(inked)")
         XCTAssertEqual(tile, CGRect(x: 100, y: 100, width: 824, height: 824))
         XCTAssertEqual(AppIconArtwork.cornerShare, 0.2237)
     }
 
-    /// At 16 pixels the icon is the lens and pupil, placed on the tile's
-    /// centre: pixel for pixel the drawing with the stroke floor, and its
-    /// ink balanced about the tile's centre line.
-    func testThe16PixelIconIsTheLashFreeEyeCentredOnTheTile() throws {
-        let pixels = 16
-        let drawn = IconPixels(try XCTUnwrap(AppIconArtwork.render(pixels: pixels)))
-        let scale = CGFloat(pixels) / AppIconArtwork.canvas
-        let mark = AppIconArtwork.mark
-        let expected = Raster(size: pixels) { ctx in
-            ctx.scaleBy(x: scale, y: scale)
-            ctx.setLineWidth(max(EyeLensGeometry.lineWidth(for: mark.width), AppIconArtwork.minimumStrokePixels / scale))
-            ctx.setLineCap(.round)
-            ctx.setLineJoin(.round)
-            ctx.addPath(EyeMarkGeometry.lens(in: mark))
-            ctx.strokePath()
-            ctx.addPath(EyeMarkGeometry.pupil(in: mark))
-            ctx.fillPath()
-        }
-        let tileInk = luminance(BrandPalette.midnight), markInk = luminance(BrandPalette.moonWhite)
-        var mismatches = 0
-        var weight: CGFloat = 0, weightedY: CGFloat = 0
-        for y in 0..<pixels {
-            for x in 0..<pixels where drawn.alpha(x, y) > 0.99 {
-                let coverage = min(max((drawn.luminance(x, y) - tileInk) / (markInk - tileInk), 0), 1)
-                // Coverage against coverage, not each against a half-way
-                // threshold: the eye's axis falls on a pixel boundary at
-                // this size, so many edge pixels are half covered.
-                if abs(coverage - expected.alpha(x, y)) > 0.1 { mismatches += 1 }
-                weight += coverage
-                weightedY += coverage * (CGFloat(y) + 0.5)
-            }
-        }
-        XCTAssertEqual(mismatches, 0, "the 16px icon differs from the eye at \(mismatches) pixels")
-        XCTAssertGreaterThan(weight, 20, "the eye is drawn at 16 pixels")
-        // The pupil's highlight takes a little ink from above the axis,
-        // which moves the balance down by a few hundredths of a pixel.
-        let centre = AppIconArtwork.tile.midY * scale
-        XCTAssertEqual(weightedY / weight, centre, accuracy: 0.25, "the eye's ink is centred down the 16px tile")
-    }
-
-    /// The minimal icon has no lashes at any size: where each upper lash's
-    /// midpoint would fall on the eye drawn at that size stays dark.
-    func testTheIconHasNoLashesAtAnySize() throws {
-        let ends = points(of: EyeMarkGeometry.lashes(in: AppIconArtwork.mark, side: .above))
-        XCTAssertEqual(ends.count, 10)
-        for pixels in [16, 32, 64, 1024] {
+    /// Where the slash crosses the moon's rim, the rim is cut back either
+    /// side of the slash, at every size where the gap spans whole pixels
+    /// (from 64; at 32 it is about a pixel and at 16 under one).
+    func testTheSlashCutsAGapInTheCrescentAtEverySize() throws {
+        let probes = Probes(in: AppIconArtwork.mark)
+        let tileInk = luminance(BrandPalette.midnight)
+        for pixels in [64, 256, 1024] {
             let px = IconPixels(try XCTUnwrap(AppIconArtwork.render(pixels: pixels)))
             let scale = CGFloat(pixels) / AppIconArtwork.canvas
-            for i in stride(from: 0, to: ends.count, by: 2) {
-                let mid = CGPoint(x: (ends[i].x + ends[i + 1].x) / 2, y: (ends[i].y + ends[i + 1].y) / 2)
-                let x = Int(mid.x * scale), y = Int(mid.y * scale)
-                XCTAssertLessThan(px.luminance(x, y), 0.45, "no lash at \(pixels) pixels near \(mid)")
-            }
+            func at(_ p: CGPoint) -> CGFloat { px.luminance(Int(p.x * scale), Int(p.y * scale)) }
+            XCTAssertGreaterThan(at(probes.rim), 0.6, "\(pixels)px: the rim is drawn")
+            XCTAssertGreaterThan(at(probes.slash), 0.6, "\(pixels)px: the slash is drawn")
+            XCTAssertEqual(at(probes.gap), tileInk, accuracy: 0.08, "\(pixels)px: the rim is cut back beside the slash")
         }
     }
+
+    // MARK: - The menu bar mark
+
+    /// Idle: the crescent alone, nothing along the slash's line and the rim
+    /// unbroken where the slash would cross it. Running: the slash is drawn
+    /// and the rim is cut back beside it. Monochrome in both states, in
+    /// both schemes, with and without Reduce Motion.
+    @MainActor
+    func testTheMarkIsACrescentWhileIdleAndSlashedWhileRunning() throws {
+        let scale: CGFloat = 4
+        let probes = Probes(in: CGRect(x: 0, y: 0, width: 17 * scale, height: 17 * scale))
+        func pixel(_ p: CGPoint) -> (Int, Int) { (Int(p.x), Int(p.y)) }
+        for (scheme, reduceMotion) in product([ColorScheme.light, .dark], [true, false]) {
+            let idle = try Raster.render(MoonMarkView(isRunning: false, reduceMotion: reduceMotion), scheme: scheme, scale: scale)
+            let running = try Raster.render(MoonMarkView(isRunning: true, reduceMotion: reduceMotion), scheme: scheme, scale: scale)
+            let label = "\(scheme), reduce motion \(reduceMotion)"
+
+            // `.primary` is the system label colour, which is itself only 85% opaque.
+            XCTAssertGreaterThan(idle.alpha(pixel(probes.rim)), 0.5, "\(label): the crescent is drawn while idle")
+            XCTAssertGreaterThan(idle.alpha(pixel(probes.gap)), 0.5, "\(label): the rim is unbroken while idle")
+            XCTAssertLessThan(idle.alpha(pixel(probes.slash)), 0.05, "\(label): no slash while idle")
+
+            XCTAssertGreaterThan(running.alpha(pixel(probes.rim)), 0.5, "\(label): the crescent stays while running")
+            XCTAssertGreaterThan(running.alpha(pixel(probes.slash)), 0.5, "\(label): the slash is drawn while running")
+            XCTAssertLessThan(running.alpha(pixel(probes.gap)), 0.05, "\(label): the rim is cut back beside the slash")
+
+            let idleInk = idle.rgb(pixel(probes.rim)), runningInk = running.rgb(pixel(probes.slash))
+            XCTAssertLessThan(idleInk.saturation, 0.1, "\(label): the idle mark is monochrome: \(idleInk)")
+            XCTAssertLessThan(runningInk.saturation, 0.1, "\(label): the running mark is monochrome: \(runningInk)")
+            XCTAssertEqual(idleInk.luminance, runningInk.luminance, accuracy: 0.05, "\(label): both states share one ink")
+            switch scheme {
+            case .light: XCTAssertLessThan(idleInk.luminance, 0.3, "light: ink is dark")
+            case .dark: XCTAssertGreaterThan(idleInk.luminance, 0.7, "dark: ink is light")
+            @unknown default: XCTFail("unexpected scheme")
+            }
+            let ink = running.count { $0.alpha > 0.5 }
+            XCTAssertLessThan(ink, running.total / 3, "\(label): the mark must not flood its frame")
+        }
+    }
+
+    /// The slash draws in along its length, and under Reduce Motion it is
+    /// always whole and fades instead.
+    func testTheSlashDrawsInAndOnlyFadesUnderReduceMotion() {
+        for progress in [CGFloat(0), 0.3, 1] {
+            let moving = MoonMarkView(progress: progress, reduceMotion: false)
+            XCTAssertEqual(moving.slashLength, progress)
+            XCTAssertEqual(moving.slashOpacity, progress > 0 ? 1 : 0)
+            let reduced = MoonMarkView(progress: progress, reduceMotion: true)
+            XCTAssertEqual(reduced.slashLength, 1)
+            XCTAssertEqual(reduced.slashOpacity, progress)
+        }
+        // A spring's overshoot either way stays within the line.
+        XCTAssertEqual(MoonMarkView(progress: 1.08, reduceMotion: false).slashLength, 1)
+        XCTAssertEqual(MoonMarkView(progress: -0.05, reduceMotion: false).slashOpacity, 0)
+    }
+
+    // MARK: - Helpers
 
     private func luminance(_ rgb: BrandPalette.RGB) -> CGFloat {
         0.2126 * rgb.red + 0.7152 * rgb.green + 0.0722 * rgb.blue
     }
 
-    @MainActor
-    func testIdleMarkIsAShadedClosedEyeWithLashesBelowInLightAndDark() throws {
-        for (scheme, reduceMotion) in product([ColorScheme.light, .dark], [true, false]) {
-            let view = EyeMarkView(isRunning: false, reduceMotion: reduceMotion, size: 17)
-            let px = try Raster.render(view, scheme: scheme, scale: 2)
-            let ink = px.count { $0.alpha > 0.5 }
-            XCTAssertGreaterThan(ink, 150, "\(scheme): too little ink for a shaded lens at 17pt")
-            XCTAssertLessThan(ink, px.total / 2, "\(scheme): the mark must not flood its frame")
-
-            let probes = Probes(size: 17, scale: 2)
-            XCTAssertGreaterThan(px.alpha(probes.outline), 0.5, "\(scheme): outline missing at \(probes.outline)")
-            // `.primary` is the system label colour, which is itself only 85% opaque.
-            XCTAssertGreaterThan(px.alpha(probes.interior), 0.7, "\(scheme): the closed lens is shaded in at \(probes.interior)")
-            XCTAssertGreaterThan(px.alpha(probes.pupil), 0.7, "\(scheme): the shading covers the pupil at \(probes.pupil)")
-            XCTAssertGreaterThan(px.alpha(probes.lashBelow), 0.5, "\(scheme): lashes hang below the closed eye at \(probes.lashBelow)")
-            XCTAssertLessThan(px.alpha(probes.lashAbove), 0.05, "\(scheme): no lashes above the closed eye at \(probes.lashAbove)")
-            let ink0 = px.rgb(probes.interior)
-            XCTAssertLessThan(ink0.saturation, 0.1, "\(scheme): the mark is monochrome: \(ink0)")
-            switch scheme {
-            case .light: XCTAssertLessThan(ink0.luminance, 0.3, "light: ink is dark")
-            case .dark: XCTAssertGreaterThan(ink0.luminance, 0.7, "dark: ink is light")
-            @unknown default: XCTFail("unexpected scheme")
-            }
-        }
+    private func distance(_ a: CGPoint, _ b: CGPoint) -> CGFloat {
+        hypot(a.x - b.x, a.y - b.y)
     }
-
-    @MainActor
-    func testRunningMarkIsAnOpenEyeWithAPupilAndLashesAboveAndStaysMonochrome() throws {
-        let probes = Probes(size: 17, scale: 2)
-        for (scheme, reduceMotion) in product([ColorScheme.light, .dark], [true, false]) {
-            let idle = try Raster.render(EyeMarkView(isRunning: false, reduceMotion: reduceMotion), scheme: scheme, scale: 2)
-            let active = try Raster.render(EyeMarkView(isRunning: true, reduceMotion: reduceMotion), scheme: scheme, scale: 2)
-
-            XCTAssertLessThan(active.alpha(probes.interior), 0.05, "\(scheme): the open lens is clear between pupil and outline at \(probes.interior)")
-            XCTAssertGreaterThan(active.alpha(probes.pupil), 0.7, "\(scheme): pupil missing at \(probes.pupil)")
-            XCTAssertGreaterThan(active.alpha(probes.outline), 0.5, "\(scheme): outline missing while running at \(probes.outline)")
-            XCTAssertGreaterThan(active.alpha(probes.lashAbove), 0.5, "\(scheme): lashes stand above the open eye at \(probes.lashAbove)")
-            XCTAssertLessThan(active.alpha(probes.lashBelow), 0.05, "\(scheme): no lashes below the open eye at \(probes.lashBelow)")
-            XCTAssertLessThan(active.count { $0.alpha > 0.5 }, idle.count { $0.alpha > 0.5 }, "\(scheme): opening the eye removes the shading")
-
-            // No tint in either state: the running mark takes the same label colour as the idle one.
-            let pupil = active.rgb(probes.pupil)
-            let shade = idle.rgb(probes.pupil)
-            XCTAssertLessThan(pupil.saturation, 0.1, "\(scheme): running mark is monochrome: \(pupil)")
-            XCTAssertLessThan(shade.saturation, 0.1, "\(scheme): idle mark is monochrome: \(shade)")
-            XCTAssertEqual(pupil.luminance, shade.luminance, accuracy: 0.05, "\(scheme): both states share one ink")
-        }
-    }
-
-    func testLashesAreFiveStrokesThatSwapSidesAndThePupilSitsInsideTheLens() {
-        let lens = EyeMarkGeometry.lens(in: grid)
-        let axisY = grid.midY
-        let open = EyeMarkGeometry.lashes(in: grid, side: .above)
-        let closed = EyeMarkGeometry.lashes(in: grid, side: .below)
-        XCTAssertEqual(subpathCount(open), 5)
-        XCTAssertEqual(subpathCount(closed), 5)
-        for point in points(of: open) {
-            XCTAssertLessThan(point.y, axisY, "open lashes stand above the axis: \(point)")
-            XCTAssertFalse(lens.contains(point), "lashes stay outside the lens: \(point)")
-        }
-        for point in points(of: closed) {
-            XCTAssertGreaterThan(point.y, axisY, "closed lashes hang below the axis: \(point)")
-            XCTAssertFalse(lens.contains(point), "lashes stay outside the lens: \(point)")
-        }
-        // Each lash is a plain segment of the designed length.
-        XCTAssertEqual(points(of: open).count, 10)
-        for pair in stride(from: 0, to: 10, by: 2) {
-            let a = points(of: open)[pair], b = points(of: open)[pair + 1]
-            XCTAssertEqual(hypot(b.x - a.x, b.y - a.y), EyeMarkGeometry.lashLength, accuracy: 0.01)
-        }
-
-        let pupil = EyeMarkGeometry.pupil(in: grid)
-        XCTAssertEqual(subpathCount(pupil), 1)
-        for point in points(of: pupil) {
-            XCTAssertTrue(lens.contains(point), "the pupil sits inside the lens: \(point)")
-        }
-        // Solid at the centre, open at the highlight.
-        XCTAssertTrue(pupil.contains(EyeMarkGeometry.pupilCenter))
-        XCTAssertFalse(pupil.contains(EyeMarkGeometry.highlightCenter))
-
-    }
-
-    func testLidShadesTheWholeLensClosedNothingOpenAndLiftsOffThePupilFromTheBottom() {
-        let size = 96
-        let rect = CGRect(x: 0, y: 0, width: size, height: size)
-        let unit = CGFloat(size) / EyeLensGeometry.designSize
-        func raster(_ path: CGPath) -> Raster {
-            Raster(size: size) { ctx in
-                ctx.addPath(path)
-                ctx.fillPath()
-            }
-        }
-        func inked(_ path: CGPath) -> Int { raster(path).count { $0.alpha > 0.5 } }
-
-        let closed = inked(EyeMarkGeometry.lid(in: rect, progress: 0))
-        let open = inked(EyeMarkGeometry.lid(in: rect, progress: 1))
-        let half = inked(EyeMarkGeometry.lid(in: rect, progress: 0.5))
-        XCTAssertEqual(open, 0, "an open lid shades nothing")
-        // Pixel for pixel, the closed lid is the filled lens.
-        let closedLid = raster(EyeMarkGeometry.lid(in: rect, progress: 0))
-        let lens = raster(EyeMarkGeometry.lens(in: rect))
-        var mismatches = 0
-        for y in 0..<size {
-            for x in 0..<size where (closedLid.alpha(x, y) > 0.5) != (lens.alpha(x, y) > 0.5) { mismatches += 1 }
-        }
-        XCTAssertEqual(mismatches, 0, "a closed lid shades exactly the lens")
-        XCTAssertGreaterThan(half, open, "half way, some of the lens is shaded")
-        XCTAssertLessThan(half, closed, "half way, some of the lens is clear")
-        XCTAssertEqual(subpathCount(EyeMarkGeometry.lid(in: rect, progress: 0.5)), 1)
-
-        // Half way, the pupil's centre column is covered above the axis and clear below it.
-        let lid = raster(EyeMarkGeometry.lid(in: rect, progress: 0.5))
-        let column = Int(EyeMarkGeometry.pupilCenter.x * unit)
-        let axis = Int(EyeMarkGeometry.pupilCenter.y * unit)
-        let radius = Int(EyeMarkGeometry.pupilRadius * unit)
-        for y in (axis + 1)...(axis + radius) {
-            XCTAssertLessThan(lid.alpha(column, y), 0.5, "the lower pupil is uncovered at row \(y)")
-        }
-        for y in (axis - radius)...(axis - 1) {
-            XCTAssertGreaterThan(lid.alpha(column, y), 0.5, "the upper pupil is still shaded at row \(y)")
-        }
-    }
-
-    func testStrokedLensAndLashesFitInsideTheSeventeenPointFrame() {
-        let frame = CGRect(x: 0, y: 0, width: 17, height: 17)
-        let width = EyeLensGeometry.lineWidth(for: frame.width)
-        let stroked = CGMutablePath()
-        for path in [EyeMarkGeometry.lens(in: frame), EyeMarkGeometry.lashes(in: frame, side: .above), EyeMarkGeometry.lashes(in: frame, side: .below)] {
-            stroked.addPath(path.copy(strokingWithWidth: width, lineCap: .round, lineJoin: .round, miterLimit: 10))
-        }
-        let box = stroked.boundingBoxOfPath
-        XCTAssertTrue(frame.contains(box), "the view's frame clips the mark: \(box)")
-        // Enough headroom that a sub-pixel rasteriser does not clip the caps.
-        let headroom = 0.4 * frame.width / EyeLensGeometry.designSize
-        XCTAssertGreaterThanOrEqual(box.minY - frame.minY, headroom, "upper lashes too close to the edge: \(box)")
-        XCTAssertLessThanOrEqual(box.maxY, frame.maxY - headroom, "lower lashes too close to the edge: \(box)")
-    }
-
-    func testPupilStaysClearOfTheOutlineAtSeventeenPoints() {
-        let size = 34  // 17 pt @2x
-        let rect = CGRect(x: 0, y: 0, width: size, height: size)
-        let outline = Raster(size: size) { ctx in
-            ctx.addPath(EyeMarkGeometry.lens(in: rect))
-            ctx.setLineWidth(EyeLensGeometry.lineWidth(for: CGFloat(size)))
-            ctx.strokePath()
-        }
-        let fill = Raster(size: size) { ctx in
-            ctx.addPath(EyeMarkGeometry.pupil(in: rect))
-            ctx.fillPath()
-        }
-        var pupilPixels = 0
-        var overlap = 0
-        for y in 0..<size {
-            for x in 0..<size where fill.alpha(x, y) > 0.5 {
-                pupilPixels += 1
-                if outline.alpha(x, y) > 0.05 { overlap += 1 }
-            }
-        }
-        XCTAssertGreaterThan(pupilPixels, size * size / 40, "the pupil is a solid disc, not a dot")
-        XCTAssertEqual(overlap, 0, "the pupil must not touch the eye outline")
-    }
-
-    // MARK: - The blink
-
-    /// The blink has to be seen: the lid lifts on a long spring and drops on
-    /// a slightly shorter, better-damped one; the pupil arrives a beat after
-    /// the lid starts and bounces a little, and shrinks straight away on
-    /// close. Under Reduce Motion everything is one 0.3 s crossfade.
-    @MainActor
-    func testTheBlinkRunsOnSeparateLidAndPupilCurvesInEachDirection() {
-        XCTAssertEqual(Motion.blink(opening: true, reduceMotion: false), .spring(response: 0.95, dampingFraction: 0.9))
-        XCTAssertEqual(Motion.blink(opening: false, reduceMotion: false), .spring(response: 0.8, dampingFraction: 0.95))
-        XCTAssertEqual(Motion.blink(opening: true, reduceMotion: false), Motion.blink)
-        XCTAssertEqual(Motion.blink(opening: false, reduceMotion: false), Motion.blinkClose)
-        XCTAssertGreaterThan(Motion.blinkResponse, Motion.baseResponse)
-        XCTAssertGreaterThan(Motion.blinkCloseResponse, Motion.baseResponse)
-
-        XCTAssertEqual(Motion.pupil(opening: true, reduceMotion: false), .spring(response: 0.5, dampingFraction: 0.6).delay(0.2))
-        XCTAssertEqual(Motion.pupil(opening: false, reduceMotion: false), .easeOut(duration: 0.4))
-        XCTAssertEqual(Motion.pupilOpenDelay, 0.2)
-        XCTAssertLessThan(Motion.pupilOpenDelay, Motion.blinkResponse, "the pupil starts while the lid is still lifting")
-
-        for opening in [true, false] {
-            XCTAssertEqual(Motion.blink(opening: opening, reduceMotion: true), .easeInOut(duration: 0.3))
-            XCTAssertEqual(Motion.pupil(opening: opening, reduceMotion: true), .easeInOut(duration: 0.3))
-        }
-        XCTAssertEqual(Motion.reducedBlinkDuration, 0.3)
-    }
-
-    /// One state value drives the pupil: full and present in the open eye,
-    /// shrunk and gone in the closed one. Under Reduce Motion it never
-    /// scales; only its opacity crosses over.
-    @MainActor
-    func testThePupilShrinksAwayWhenTheEyeClosesAndNeverScalesUnderReduceMotion() {
-        XCTAssertEqual(Motion.pupilClosedScale, 0.6)
-        let open = EyeMarkView(isRunning: true, reduceMotion: false)
-        let closed = EyeMarkView(isRunning: false, reduceMotion: false)
-        XCTAssertEqual(open.pupilScale, 1)
-        XCTAssertEqual(open.pupilOpacity, 1)
-        XCTAssertEqual(closed.pupilScale, 0.6)
-        XCTAssertEqual(closed.pupilOpacity, 0)
-
-        let reducedOpen = EyeMarkView(isRunning: true, reduceMotion: true)
-        let reducedClosed = EyeMarkView(isRunning: false, reduceMotion: true)
-        XCTAssertEqual(reducedOpen.pupilScale, 1)
-        XCTAssertEqual(reducedClosed.pupilScale, 1, "no pupil scaling at all under Reduce Motion")
-        XCTAssertEqual(reducedOpen.pupilOpacity, 1)
-        XCTAssertEqual(reducedClosed.pupilOpacity, 0)
-    }
-
-    /// The opening spring peaks at about 1.04 and an interrupted blink can
-    /// stop anywhere, so the drawn pupil is clipped to the lens: nothing of
-    /// it, at any scale, lands outside the outline.
-    @MainActor
-    func testThePupilIsClippedToTheLensHoweverFarItOvershoots() throws {
-        let size = 96
-        let rect = CGRect(x: 0, y: 0, width: size, height: size)
-        let lens = EyeMarkGeometry.lens(in: rect)
-        func outsideLens(_ px: Raster) -> Int {
-            var n = 0
-            for y in 0..<size {
-                for x in 0..<size where px.alpha(x, y) > 0.5 && !lens.contains(CGPoint(x: CGFloat(x) + 0.5, y: CGFloat(y) + 0.5)) { n += 1 }
-            }
-            return n
-        }
-        func render<V: View>(_ view: V) throws -> Raster {
-            try Raster.render(view.frame(width: CGFloat(size), height: CGFloat(size)), scheme: .light, scale: 1)
-        }
-
-        let rest = try render(EyePupilLayer(scale: 1, opacity: 1))
-        let peak = try render(EyePupilLayer(scale: 1.04, opacity: 1))
-        XCTAssertEqual(outsideLens(rest), 0)
-        XCTAssertEqual(outsideLens(peak), 0, "the overshoot peak stays inside the lens")
-        XCTAssertGreaterThan(peak.count { $0.alpha > 0.5 }, rest.count { $0.alpha > 0.5 }, "the clip does not eat a pupil that fits")
-
-        // Far beyond any real overshoot, the clip is what keeps it in: the
-        // same pupil unclipped would show outside the outline.
-        let wild = try render(EyePupilLayer(scale: 1.6, opacity: 1))
-        let unclipped = try render(EyePupil().fill(.black).scaleEffect(1.6, anchor: EyePupilLayer.anchor))
-        XCTAssertGreaterThan(outsideLens(unclipped), 0, "the control should overshoot the lens")
-        XCTAssertEqual(outsideLens(wild), 0, "clipped, the pupil never leaves the lens")
-        XCTAssertGreaterThan(wild.count { $0.alpha > 0.5 }, 0)
-    }
-
-    /// The lid's progress is left unclamped in the view so the spring can
-    /// overshoot; the geometry bounds what is drawn instead.
-    func testTheLidGeometryClampHoldsBelowZeroAndAboveOne() {
-        let size = 96
-        let rect = CGRect(x: 0, y: 0, width: size, height: size)
-        func raster(_ progress: CGFloat) -> Raster {
-            Raster(size: size) { ctx in
-                ctx.addPath(EyeMarkGeometry.lid(in: rect, progress: progress))
-                ctx.fillPath()
-            }
-        }
-        func mismatches(_ a: Raster, _ b: Raster) -> Int {
-            var n = 0
-            for y in 0..<size {
-                for x in 0..<size where (a.alpha(x, y) > 0.5) != (b.alpha(x, y) > 0.5) { n += 1 }
-            }
-            return n
-        }
-        let closed = raster(0), open = raster(1)
-        for below in [-0.01, -0.5, -3] as [CGFloat] {
-            XCTAssertEqual(mismatches(raster(below), closed), 0, "progress \(below) draws the closed lid")
-        }
-        for above in [1.01, 1.04, 1.5, 4] as [CGFloat] {
-            XCTAssertEqual(mismatches(raster(above), open), 0, "progress \(above) draws the open lid")
-            XCTAssertEqual(raster(above).count { $0.alpha > 0.5 }, 0, "progress \(above) shades nothing")
-        }
-        // And every out-of-range lid is still one well-formed subpath inside the frame.
-        for progress in [-3, 4] as [CGFloat] {
-            let lid = EyeMarkGeometry.lid(in: rect, progress: progress)
-            XCTAssertEqual(subpathCount(lid), 1)
-            XCTAssertTrue(rect.contains(lid.boundingBoxOfPath), "\(lid.boundingBoxOfPath)")
-        }
-    }
-
-    // MARK: - Helpers
 
     private func product<A, B>(_ a: [A], _ b: [B]) -> [(A, B)] {
         a.flatMap { x in b.map { (x, $0) } }
@@ -483,48 +228,31 @@ final class BrandingTests: XCTestCase {
         return moves
     }
 
-    /// Every point of every element, control points included.
-    private func points(of path: CGPath) -> [CGPoint] {
-        var points: [CGPoint] = []
-        path.applyWithBlock { element in
-            let count: Int
-            switch element.pointee.type {
-            case .moveToPoint, .addLineToPoint: count = 1
-            case .addQuadCurveToPoint: count = 2
-            case .addCurveToPoint: count = 3
-            case .closeSubpath: count = 0
-            @unknown default: count = 0
-            }
-            for i in 0..<count { points.append(element.pointee.points[i]) }
-        }
-        return points
-    }
-
-    /// Grid points worth probing, mapped into a rendered view of `size`
-    /// points at `scale`: derived from the paths' own bounding boxes so the
-    /// test follows the geometry rather than pinning magic numbers.
+    /// Points worth probing, on the grid mapped into `rect`, derived from
+    /// the geometry so the tests follow it rather than pinning pixels.
     private struct Probes {
-        let outline: (Int, Int)
-        /// Between the pupil's right edge and the outline: shaded when closed, clear when open.
-        let interior: (Int, Int)
-        let pupil: (Int, Int)
-        /// Midway along the centre lash in each position.
-        let lashAbove: (Int, Int)
-        let lashBelow: (Int, Int)
+        /// On the moon's rim, well away from the slash.
+        let rim: CGPoint
+        /// On the slash, out in the bite where there is no crescent.
+        let slash: CGPoint
+        /// On the rim just beside the slash where the slash crosses it:
+        /// inked when unslashed, cleared by the gap when slashed.
+        let gap: CGPoint
 
-        init(size: CGFloat, scale: CGFloat) {
-            let rect = CGRect(x: 0, y: 0, width: size, height: size)
-            let eyeBox = EyeMarkGeometry.lens(in: rect).boundingBoxOfPath
-            let pupilBox = EyeMarkGeometry.pupil(in: rect).boundingBoxOfPath
-            let aboveBox = EyeMarkGeometry.lashes(in: rect, side: .above).boundingBoxOfPath
-            let belowBox = EyeMarkGeometry.lashes(in: rect, side: .below).boundingBoxOfPath
-            let unit = size / EyeLensGeometry.designSize
-            func px(_ x: CGFloat, _ y: CGFloat) -> (Int, Int) { (Int((x * scale).rounded()), Int((y * scale).rounded())) }
-            outline = px(eyeBox.minX + 0.3 * unit, eyeBox.midY)
-            interior = px((pupilBox.maxX + eyeBox.maxX) / 2, eyeBox.midY)
-            pupil = px(EyeMarkGeometry.pupilCenter.x * unit, EyeMarkGeometry.pupilCenter.y * unit)
-            lashAbove = px(aboveBox.midX, aboveBox.minY + EyeMarkGeometry.lashLength / 2 * unit)
-            lashBelow = px(belowBox.midX, belowBox.maxY - EyeMarkGeometry.lashLength / 2 * unit)
+        init(in rect: CGRect) {
+            let t = MoonMarkGeometry.gridTransform(in: rect)
+            let c = MoonMarkGeometry.moonCenter, r = MoonMarkGeometry.moonRadius
+            rim = CGPoint(x: c.x - r, y: c.y).applying(t)
+            slash = MoonMarkGeometry.biteCenter.applying(t)
+            // The slash leaves the moon down and to the left, along (-1, 1).
+            let crossing = CGPoint(x: c.x - r / 2.squareRoot(), y: c.y + r / 2.squareRoot())
+            // Off the slash, half way between the line's edge (0.75 units)
+            // and the gap's (2), along the perpendicular (1, 1).
+            let lineEdge = MoonMarkGeometry.strokeUnits / 2
+            let gapEdge = lineEdge + MoonMarkGeometry.gapUnits
+            let offset = (lineEdge + gapEdge) / 2 / 2.squareRoot()
+            let angle = atan2(crossing.y + offset - c.y, crossing.x + offset - c.x)
+            gap = CGPoint(x: c.x + r * cos(angle), y: c.y + r * sin(angle)).applying(t)
         }
     }
 }

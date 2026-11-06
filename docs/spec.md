@@ -1191,8 +1191,7 @@ Battery watts are read from `AppleSmartBattery` (`InstantAmperage` ×
 
 - Everything animates with springs, except the fold that closes the pills
   (a fixed-duration ease, so the slots can leave the moment the last pill
-  is gone), the pupil shrinking away as the lid drops (a 0.4 s ease-out,
-  no bounce) and the Reduce Motion crossfades.
+  is gone) and the Reduce Motion crossfades.
   Baseline: `.spring(response: 0.35, dampingFraction: 0.72)`; pill focus
   bounce and chip taps use a snappier `.spring(response: 0.25,
   dampingFraction: 0.6)` with a slight scale overshoot (1.0 → 1.06 → 1.0).
@@ -1211,23 +1210,24 @@ Battery watts are read from `AppleSmartBattery` (`InstantAmperage` ×
   padding, so typing a digit never changes the layout.
 - Pills appear with a staggered scale-and-fade (about 40 ms between pills)
   inside their slots, which are all in the layout from the first frame.
-- On Esc and on Enter the pills fold toward the eye: each one slides left
+- On Esc and on Enter the pills fold toward the mark: each one slides left
   by the slots before it, shrinks to 0.6 from its leading edge and fades,
   on one 0.32 s ease curve, farthest pill first, 40 ms apart, sliding under
   its neighbour. The slots leave in one relayout 0.36 s after the last
   pill's step, and the width is written then, never across a visible pill.
-  On Enter the eye starts to open at once and the countdown scales in from
+  On Enter the moon's slash starts to draw in at once and the countdown scales in from
   the leading edge after the slots have left, showing the time the session
   will read once the manager confirms it and ticking at 1 Hz meanwhile;
-  the hold-to-end ring follows the confirmation. A click on the eye during
+  the hold-to-end ring follows the confirmation. A click on the moon during
   an Esc fold brings the pills back; during an Enter fold the pending start
   owns the bar and the click does nothing until the manager answers.
   Transitions carry their own animation,
   so they run whatever transaction the layout change lands in.
-- The eye's blink is a slower spring (response 0.95, damping fraction 0.9
-  opening; 0.8 / 0.95 closing) so the lid lift and the lash hand-over are
-  seen; the pupil scales in from 0.6 on its own bouncier spring 0.2 s later
-  and eases out to 0.6 on close, clipped to the lens.
+- The menu bar mark is a crescent moon while idle. While sleep is held a
+  slash draws in across it from its lower end, cutting its own gap in the
+  crescent, on a slower spring (response 0.95, damping fraction 0.9 drawing
+  in; 0.8 / 0.95 wiping out) so the stroke is seen. Under Reduce Motion the
+  slash crossfades instead.
 - Typing happens in a non-activating key panel: the app in front stays
   frontmost; only key status moves to the pills while typing, as with
   Spotlight, and it returns when the pills close.

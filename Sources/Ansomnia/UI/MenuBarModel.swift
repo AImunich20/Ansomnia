@@ -78,7 +78,7 @@ final class MenuBarModel {
     /// the stagger. Scale and opacity only: the slots themselves stay put.
     var visiblePills: Int = 0
     /// A close is folding the pills shut: a hidden pill travels
-    /// towards the eye, shrinks and fades instead of retracting in place.
+    /// towards the mark, shrinks and fades instead of retracting in place.
     /// Set when the retract begins; cleared when the slots leave, and by a
     /// reopen or a refused start, which bring the pills back.
     var pillsCollapsing: Bool = false

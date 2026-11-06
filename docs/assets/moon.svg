@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="112" height="112" viewBox="100 100 824 824" role="img" aria-labelledby="eo-title eo-desc">
+  <title id="eo-title">Ansomnia</title>
+  <desc id="eo-desc">The Ansomnia mark: a crescent moon with a slash through it, drawn in moon-white on a charcoal rounded tile.</desc>
+  <!-- scripts/generate-app-icon.sh writes this file from AppIconArtwork, and PackagingTests fails if the two differ, so edit the Swift drawing and rerun the script. The layout matches the app icon: an 824-unit tile inset 100 units in a 1024 canvas, corners at 22.37% of the tile, the 24-unit mark grid at 76% of the tile side. -->
+  <rect x="100" y="100" width="824" height="824" rx="184.3288" fill="#303336"/>
+  <!-- MoonMarkGeometry on its 24-unit grid: the crescent's outline, then the slash twice, first in the tile colour to cut a gap in the crescent, then in the ink. -->
+  <g transform="translate(198.88 198.88) scale(26.0933)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20.3816 13.4137 C19.6008 18.0428 15.2153 21.1624 10.5863 20.3816 C5.9572 19.6008 2.8376 15.2153 3.6184 10.5863 C4.2204 7.0169 7.0169 4.2204 10.5863 3.6184 C8.2768 6.7188 8.918 11.1043 12.0184 13.4137 C14.4998 15.2621 17.9002 15.2621 20.3816 13.4137 Z" stroke="#E6E3DD" stroke-width="1.5"/>
+    <path d="M3.5 20.5 L20.5 3.5" stroke="#303336" stroke-width="4"/>
+    <path d="M3.5 20.5 L20.5 3.5" stroke="#E6E3DD" stroke-width="1.5"/>
+  </g>
+</svg>

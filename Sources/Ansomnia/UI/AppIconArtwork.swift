@@ -1,9 +1,9 @@
 import CoreGraphics
 import Foundation
 
-/// The app icon as one drawing, kept minimal: the menu bar's open eye,
-/// `EyeMarkGeometry` at progress 1, reduced to the lens and the pupil, in
-/// moon-white on a charcoal rounded tile. No lashes at any size.
+/// The app icon as one drawing, kept minimal: the menu bar's running mark,
+/// the crescent moon of `MoonMarkGeometry` with the slash through it, in
+/// moon-white on a charcoal rounded tile.
 /// scripts/generate-app-icon.sh compiles this file with the geometry and
 /// palette into the icon generator, which writes the PNG, the ICNS members
 /// and the README SVG. PackagingTests renders this drawing and compares it
@@ -23,28 +23,29 @@ enum AppIconArtwork {
     /// The thinnest stroke, in device pixels. The design stroke is 1.5 grid
     /// units, 0.61 px at 16 pixels and 1.22 px at 32, so this floor only
     /// thickens the 16 pixel member. A 0.61 px line covers at most 61% of
-    /// any pixel, which draws the outline grey instead of moon-white.
+    /// any pixel, which draws the line grey instead of moon-white.
     static let minimumStrokePixels: CGFloat = 1
 
     /// The tile, in canvas units.
     static let tile = CGRect(x: tileInset, y: tileInset, width: canvas - 2 * tileInset, height: canvas - 2 * tileInset)
 
     /// The mark's square, in canvas units: the 24-unit grid at
-    /// `markShare` of the tile side, centred on the tile. The lens and the
-    /// pupil are symmetric about the eye's axis at y 12, so centring the
-    /// grid centres what is drawn.
+    /// `markShare` of the tile side, centred on the tile. The slash runs
+    /// corner to corner through the grid's centre, so centring the grid
+    /// centres what is drawn.
     static let mark: CGRect = {
         let side = tile.width * markShare
         return CGRect(x: tile.midX - side / 2, y: tile.midY - side / 2, width: side, height: side)
     }()
 
-    /// The box that the mark's strokes and fills cover when drawn into
-    /// `rect`: the lens's bounding box grown by half the line width on each
-    /// side for the round caps. The pupil lies inside the lens and adds
-    /// nothing.
+    /// The box that the mark's strokes cover when drawn into `rect`: the
+    /// crescent's and the slash's bounding boxes grown by half the line
+    /// width on each side for the round caps.
     static func inked(in rect: CGRect) -> CGRect {
-        let half = EyeLensGeometry.lineWidth(for: rect.width) / 2
-        return EyeMarkGeometry.lens(in: rect).boundingBoxOfPath.insetBy(dx: -half, dy: -half)
+        let half = MoonMarkGeometry.lineWidth(for: rect.width) / 2
+        return MoonMarkGeometry.crescent(in: rect).boundingBoxOfPath
+            .union(MoonMarkGeometry.slash(in: rect).boundingBoxOfPath)
+            .insetBy(dx: -half, dy: -half)
     }
 
     /// The whole icon at `pixels` square. Returns nil if CoreGraphics cannot
@@ -79,16 +80,25 @@ enum AppIconArtwork {
         ctx.fillPath()
 
         let square = mark
-        let stroke = max(EyeLensGeometry.lineWidth(for: square.width), minimumStrokePixels / scale)
-        ctx.setStrokeColor(BrandPalette.moonWhite.cgColor)
-        ctx.setLineWidth(stroke)
+        let floor = minimumStrokePixels / scale
+        let stroke = max(MoonMarkGeometry.lineWidth(for: square.width), floor)
+        // The gap keeps its margin either side of the line at every size.
+        let gap = stroke + MoonMarkGeometry.gapWidth(for: square.width) - MoonMarkGeometry.lineWidth(for: square.width)
         ctx.setLineCap(.round)
         ctx.setLineJoin(.round)
-        ctx.addPath(EyeMarkGeometry.lens(in: square))
+        ctx.setStrokeColor(BrandPalette.moonWhite.cgColor)
+        ctx.setLineWidth(stroke)
+        ctx.addPath(MoonMarkGeometry.crescent(in: square))
         ctx.strokePath()
-        ctx.setFillColor(BrandPalette.moonWhite.cgColor)
-        ctx.addPath(EyeMarkGeometry.pupil(in: square))
-        ctx.fillPath()
+        // The slash cuts a band of tile out of the crescent, then is drawn in it.
+        ctx.setStrokeColor(BrandPalette.midnight.cgColor)
+        ctx.setLineWidth(gap)
+        ctx.addPath(MoonMarkGeometry.slash(in: square))
+        ctx.strokePath()
+        ctx.setStrokeColor(BrandPalette.moonWhite.cgColor)
+        ctx.setLineWidth(stroke)
+        ctx.addPath(MoonMarkGeometry.slash(in: square))
+        ctx.strokePath()
     }
 
     // MARK: - The README SVG
@@ -98,20 +108,24 @@ enum AppIconArtwork {
     /// The mark's paths come from the same geometry on the 24-unit grid,
     /// inside a transform that places the grid on the tile.
     static func svg() -> String {
-        let grid = CGRect(x: 0, y: 0, width: EyeLensGeometry.designSize, height: EyeLensGeometry.designSize)
-        let scale = mark.width / EyeLensGeometry.designSize
+        let grid = CGRect(x: 0, y: 0, width: MoonMarkGeometry.designSize, height: MoonMarkGeometry.designSize)
+        let scale = mark.width / MoonMarkGeometry.designSize
         let ink = hex(BrandPalette.moonWhite)
-        let strokeAttributes = "fill=\"none\" stroke=\"\(ink)\" stroke-width=\"\(number(EyeLensGeometry.strokeUnits))\" stroke-linecap=\"round\" stroke-linejoin=\"round\""
+        let tileColour = hex(BrandPalette.midnight)
+        let lineAttributes = "fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\""
+        let slash = pathData(MoonMarkGeometry.slash(in: grid))
+        let gap = MoonMarkGeometry.strokeUnits + 2 * MoonMarkGeometry.gapUnits
         return """
         <svg xmlns="http://www.w3.org/2000/svg" width="112" height="112" viewBox="\(number(tile.minX)) \(number(tile.minY)) \(number(tile.width)) \(number(tile.height))" role="img" aria-labelledby="eo-title eo-desc">
           <title id="eo-title">Ansomnia</title>
-          <desc id="eo-desc">The Ansomnia mark: an open almond-shaped eye with a round pupil, drawn in moon-white on a charcoal rounded tile.</desc>
+          <desc id="eo-desc">The Ansomnia mark: a crescent moon with a slash through it, drawn in moon-white on a charcoal rounded tile.</desc>
           <!-- scripts/generate-app-icon.sh writes this file from AppIconArtwork, and PackagingTests fails if the two differ, so edit the Swift drawing and rerun the script. The layout matches the app icon: an \(number(tile.width))-unit tile inset \(number(tileInset)) units in a \(number(canvas)) canvas, corners at \(number(cornerShare * 100))% of the tile, the 24-unit mark grid at \(number(markShare * 100))% of the tile side. -->
-          <rect x="\(number(tile.minX))" y="\(number(tile.minY))" width="\(number(tile.width))" height="\(number(tile.height))" rx="\(number(tile.width * cornerShare))" fill="\(hex(BrandPalette.midnight))"/>
-          <!-- EyeMarkGeometry at progress 1 on its 24-unit grid. The paths are the lens, closed by two cubic lids, then the pupil with the highlight cut as a notch from its upper right edge. -->
-          <g transform="translate(\(number(mark.minX)) \(number(mark.minY))) scale(\(number(scale)))">
-            <path d="\(pathData(EyeMarkGeometry.lens(in: grid)))" \(strokeAttributes)/>
-            <path d="\(pathData(EyeMarkGeometry.pupil(in: grid)))" fill="\(ink)"/>
+          <rect x="\(number(tile.minX))" y="\(number(tile.minY))" width="\(number(tile.width))" height="\(number(tile.height))" rx="\(number(tile.width * cornerShare))" fill="\(tileColour)"/>
+          <!-- MoonMarkGeometry on its 24-unit grid: the crescent's outline, then the slash twice, first in the tile colour to cut a gap in the crescent, then in the ink. -->
+          <g transform="translate(\(number(mark.minX)) \(number(mark.minY))) scale(\(number(scale)))" \(lineAttributes)>
+            <path d="\(pathData(MoonMarkGeometry.crescent(in: grid)))" stroke="\(ink)" stroke-width="\(number(MoonMarkGeometry.strokeUnits))"/>
+            <path d="\(slash)" stroke="\(tileColour)" stroke-width="\(number(gap))"/>
+            <path d="\(slash)" stroke="\(ink)" stroke-width="\(number(MoonMarkGeometry.strokeUnits))"/>
           </g>
         </svg>
 

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/eye-open.svg" alt="Ansomnia: an open eye with a round pupil" width="112">
+  <img src="docs/assets/moon.svg" alt="Ansomnia: a crescent moon with a slash through it" width="112">
 </p>
 
 <h1 align="center">Ansomnia</h1>
@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  A macOS menu bar app for timed awake sessions. Ansomnia is an eye icon that
+  A macOS menu bar app for timed awake sessions. Ansomnia is a moon icon that
   lives in your MacBook menu bar. It has no Dock icon and no main window. Set
   how long your Mac stays awake, choose what happens when the lid closes, and
   see when something could not be undone.
@@ -36,7 +36,7 @@
 > [Validation status](docs/release-validation.md) · [Apple's ventilation guidance](https://support.apple.com/en-us/102336)
 
 <p align="center">
-  <img src="docs/assets/session-flow.svg" alt="Illustrated menu-bar controls: enter Days, Hours, and Minutes, watch the countdown, and click × to finish early. Click the eye or countdown to add time. Closing the lid is optional, and incomplete recovery needs attention." width="880">
+  <img src="docs/assets/session-flow.svg" alt="Illustrated menu-bar controls: enter Days, Hours, and Minutes, watch the countdown, and click × to finish early. Click the moon or countdown to add time. Closing the lid is optional, and incomplete recovery needs attention." width="880">
 </p>
 
 ## Install
@@ -72,7 +72,7 @@ compare it with `shasum -a 256 ~/Downloads/Ansomnia.dmg`.
 
 ### Updates
 
-Right-click the eye, choose Settings, and under App click **Check for
+Right-click the moon, choose Settings, and under App click **Check for
 updates**. When a newer release exists, **Download and install** fetches its
 DMG from GitHub, checks it against the release's `SHA256SUMS` and runs the
 installer in Terminal. The installer asks for your password, ends any session
@@ -132,11 +132,11 @@ file and explains how upgrades replace them.
 
 ## Using it
 
-1. **Start.** Click the eye in the menu bar, enter days, hours and minutes,
+1. **Start.** Click the moon in the menu bar, enter days, hours and minutes,
    and press Enter.
-2. **Add time.** Click the eye or the countdown during a session.
+2. **Add time.** Click the moon or the countdown during a session.
 3. **End early.** Click the × next to the countdown.
-4. **Settings and status.** Right-click the eye. Quit asks Ansomnia to undo
+4. **Settings and status.** Right-click the moon. Quit asks Ansomnia to undo
    the session first, and it refuses while a change is still waiting to be
    undone. Saved audio for an output that isn't connected doesn't hold it up.
    Ansomnia restores that output if it reconnects while the app runs, or at

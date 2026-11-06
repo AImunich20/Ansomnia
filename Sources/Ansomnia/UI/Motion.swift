@@ -5,8 +5,7 @@ import SwiftUI
 ///
 /// Springs, with three exceptions: the fold that closes the pills runs on a
 /// fixed-duration ease, so the moment the last pill is gone is known and
-/// the slots can leave right after it; the pupil shrinking away as the lid
-/// drops is a plain ease-out, no bounce; and behind Reduce Motion every
+/// the slots can leave right after it; and behind Reduce Motion every
 /// movement collapses into a short crossfade with no scale.
 @MainActor
 enum Motion {
@@ -36,7 +35,7 @@ enum Motion {
     static let reduced: Animation = .easeInOut(duration: 0.15)
 
     /// A close folds the bar shut: each pill travels towards the
-    /// eye by its own distance from the first slot (so all three converge
+    /// mark by its own distance from the first slot (so all three converge
     /// on it, the farthest travelling farthest) while shrinking to
     /// `collapseScale` from its leading edge and fading out. One curve for
     /// all three, `stagger` apart, farthest first. A fixed-duration curve
@@ -67,47 +66,26 @@ enum Motion {
         reduceMotion ? reducedRetractSettleDuration : retractSettleDuration
     }
 
-    /// The eye's blink. The lid and the pupil run on their own curves, and
-    /// each direction has its own, so the lid is seen lifting and the pupil
-    /// is seen arriving: long enough to read as a blink, not a flicker.
-    /// Opening: the lid lifts on a slow spring.
+    /// The moon mark's slash drawing in as a session starts, and wiping out
+    /// as it ends. Each direction has its own curve, long enough to read as
+    /// a stroke being drawn, not a flicker. (Named for the eye that the mark
+    /// used to be, whose lid ran on the same curves.)
+    /// Drawing in: a slow spring.
     static let blinkResponse: TimeInterval = 0.95
     static let blinkDampingFraction = 0.9
     static let blink: Animation = .spring(response: blinkResponse, dampingFraction: blinkDampingFraction)
-    /// Closing: the lid drops a little quicker and nearer critical damping.
+    /// Wiping out: a little quicker and nearer critical damping.
     static let blinkCloseResponse: TimeInterval = 0.8
     static let blinkCloseDampingFraction = 0.95
     static let blinkClose: Animation = .spring(response: blinkCloseResponse, dampingFraction: blinkCloseDampingFraction)
-    /// Reduce Motion: the lid and the lashes crossfade instead.
+    /// Reduce Motion: the slash crossfades instead.
     static let reducedBlinkDuration: TimeInterval = 0.3
     static let reducedBlink: Animation = .easeInOut(duration: reducedBlinkDuration)
 
-    /// The pupil arriving behind the lifting lid: a bouncier spring (peak
-    /// scale about 1.04) that starts once the lid is under way. Keyed on
-    /// the eye state, so a close during the delay retargets it rather than
-    /// letting it run late.
-    static let pupilOpenResponse: TimeInterval = 0.5
-    static let pupilOpenDampingFraction = 0.6
-    static let pupilOpenDelay: TimeInterval = 0.2
-    static let pupilOpen: Animation = .spring(response: pupilOpenResponse, dampingFraction: pupilOpenDampingFraction).delay(pupilOpenDelay)
-    /// The pupil shrinking away as the lid drops: no delay, no bounce.
-    static let pupilCloseDuration: TimeInterval = 0.4
-    static let pupilClose: Animation = .easeOut(duration: pupilCloseDuration)
-    /// The pupil's scale in the closed eye; 1 in the open eye and, since it
-    /// never scales, under Reduce Motion.
-    static let pupilClosedScale: CGFloat = 0.6
-
-    /// The lid's blink in one direction; a crossfade under Reduce Motion.
+    /// The slash's stroke in one direction; a crossfade under Reduce Motion.
     static func blink(opening: Bool, reduceMotion: Bool = Motion.reduceMotion) -> Animation {
         if reduceMotion { return reducedBlink }
         return opening ? blink : blinkClose
-    }
-
-    /// The pupil's blink in one direction. Under Reduce Motion it does not
-    /// scale at all: only its opacity moves, on the same crossfade as the lid.
-    static func pupil(opening: Bool, reduceMotion: Bool = Motion.reduceMotion) -> Animation {
-        if reduceMotion { return reducedBlink }
-        return opening ? pupilOpen : pupilClose
     }
 
     /// System Reduce Motion setting, read live so toggling it in System

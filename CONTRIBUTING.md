@@ -59,10 +59,11 @@ docs/releasing.md. Never stress or heat a machine in a bag. A pull request
 also needs its own real-Mac report before it merges; see "Real-Mac evidence"
 below.
 
-The app icon is the menu bar's open eye on a charcoal tile.
+The app icon is the menu bar's slashed crescent moon on a charcoal tile.
 [AppIconArtwork](Sources/Ansomnia/UI/AppIconArtwork.swift) draws it from the
-same [vector geometry](Sources/Ansomnia/UI/EyeMarkGeometry.swift) as the menu
-bar's closed eye, which opens while a session runs. After changing the
+same [vector geometry](Sources/Ansomnia/UI/MoonMarkGeometry.swift) as the menu
+bar's mark: a plain crescent while idle, with the slash drawn in while a
+session runs. After changing the
 artwork, run `./scripts/generate-app-icon.sh`. It regenerates the packaged PNG
 and ICNS assets and the README's SVG offline, with Xcode's swiftc and
 iconutil.

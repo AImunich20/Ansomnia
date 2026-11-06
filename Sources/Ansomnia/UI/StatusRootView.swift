@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Everything drawn inside the status item: the mark, the three pill slots
+/// Everything drawn inside the status item: the moon mark, the three pill slots
 /// while entering, or the countdown while a session runs or starts.
 ///
 /// The layout here changes only on state the controller sets outside any
@@ -43,10 +43,11 @@ struct StatusRootView: View {
     /// A pending start shows its projected countdown; a confirmed session its
     /// live one.
     private var showsCountdown: Bool { model.phase == .starting || showsRunningControls }
-    /// The eye opens the moment Enter starts a session, not when the manager
-    /// confirms it: the blink is the first thing that answers the keystroke.
-    /// A refused start closes it again with the pills coming back.
-    private var eyeOpen: Bool { isRunning || model.phase == .starting }
+    /// The slash draws in the moment Enter starts a session, not when the
+    /// manager confirms it: it is the first thing that answers the
+    /// keystroke. A refused start wipes it out again with the pills coming
+    /// back.
+    private var slashed: Bool { isRunning || model.phase == .starting }
 
     private var countdownText: String {
         Self.countdownText(pending: model.pendingCountdown, live: manager.countdownText, phase: model.phase)
@@ -103,10 +104,10 @@ struct StatusRootView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    /// A closed eye while idle; it opens while sleep is held, so the app
-    /// visibly does something even when Low Power Mode is not showing.
+    /// A crescent moon while idle; slashed through while sleep is held, so
+    /// the app visibly does something even when Low Power Mode is not showing.
     private var icon: some View {
-        EyeMarkView(isRunning: eyeOpen, reduceMotion: reduceMotion)
+        MoonMarkView(isRunning: slashed, reduceMotion: reduceMotion)
             .frame(width: 20, height: 20)
             .contentShape(Rectangle())
             .phaseAnimator([CGFloat(1), reduceMotion ? 1 : 0.86, 1], trigger: model.iconBounce) { content, scale in
@@ -123,11 +124,11 @@ struct StatusRootView: View {
     /// the stagger never moves the layout. A hidden pill has two shapes:
     /// retracted in place (the open stagger's starting point, scaled down
     /// from its leading edge), and while `pillsCollapsing` (a close)
-    /// folded towards the eye: shifted left by its own distance from the
+    /// folded towards the mark: shifted left by its own distance from the
     /// first slot, so all three converge on the mark, and shrunk to
     /// `Motion.collapseScale`. The farthest pill leaves first (the stagger
     /// steps `visiblePills` down), so the pills still up always run
-    /// unbroken from the eye and each one slides under its neighbour
+    /// unbroken from the mark and each one slides under its neighbour
     /// (`zIndex`) as the bar folds shut. Reduce Motion: opacity only.
     private var pills: some View {
         ForEach(Array(DurationInput.Field.allCases.enumerated()), id: \.element) { index, field in

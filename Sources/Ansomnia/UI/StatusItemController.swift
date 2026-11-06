@@ -181,7 +181,7 @@ final class StatusItemController: NSObject {
     /// last pill has gone: the session can end, or a pending start be
     /// confirmed, in that window.
     ///
-    /// The pills fold shut towards the eye with their stagger
+    /// The pills fold shut towards the mark with their stagger
     /// (`pillsCollapsing` picks that shape over the in-place retract), the
     /// slots leave once the last has gone, and the length is written when
     /// the layout reports that, never before, so it does not cut across
@@ -308,7 +308,7 @@ final class StatusItemController: NSObject {
         // change the layout. Clearing the error label, say, can make the
         // hosting view lay out and report at once, and that report is
         // written; it must not land under a fold still flagged. A pill
-        // still on its way to the eye slides back to its slot on the
+        // still on its way to the mark slides back to its slot on the
         // collapse curve while the stagger brings it up; animated, so it
         // is not seen jumping back.
         endFoldIfAny()
@@ -516,7 +516,7 @@ final class StatusItemController: NSObject {
             model.pendingCountdown = projection.countdown(at: now)
         }
         // The phase flips now, outside any animation, so nothing can act on
-        // the pills again while they leave (and the eye starts opening);
+        // the pills again while they leave (and the slash starts drawing in);
         // the slots stay in the layout until the last pill has gone, then
         // leave in one relayout and the countdown scales in. Enter during
         // the open stagger folds whatever is up.

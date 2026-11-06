@@ -5,7 +5,7 @@ import ImageIO
 /// Writes the Ansomnia app icon files from the drawing the app carries.
 /// Not part of the SwiftPM targets: scripts/generate-app-icon.sh compiles
 /// this file together with Sources/Ansomnia/UI/AppIconArtwork.swift, the
-/// geometry it draws (EyeLensGeometry.swift, EyeMarkGeometry.swift) and
+/// geometry it draws (MoonMarkGeometry.swift) and
 /// BrandPalette.swift, so there is one drawing and no pixel art to keep in
 /// step.
 ///
