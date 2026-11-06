@@ -468,6 +468,27 @@ final class StoreTests: XCTestCase {
         XCTAssertTrue(st.isDirty)
     }
 
+    /// Builds up to 0.3.x wrote `dockerFrozen` as a list of pids. An empty
+    /// list is a clean journal; a non-empty one is Docker frozen, with the
+    /// pids kept so they are resumed.
+    func testLegacyDockerFrozenListDecodes() throws {
+        let empty = Data(#"{"sleepDisabledByUs": false, "frozenProcesses": [], "dockerFrozen": [], "displaySlept": false}"#.utf8)
+        let clean = try Store.makeDecoder().decode(RuntimeState.self, from: empty)
+        XCTAssertFalse(clean.dockerFrozen)
+        XCTAssertTrue(clean.frozenProcesses.isEmpty)
+        XCTAssertFalse(clean.isDirty)
+
+        let listed = Data(#"{"dockerFrozen": [56, 78]}"#.utf8)
+        let st = try Store.makeDecoder().decode(RuntimeState.self, from: listed)
+        XCTAssertTrue(st.dockerFrozen)
+        XCTAssertEqual(st.frozenProcesses, [FrozenProcess(pid: 56, startedAt: nil), FrozenProcess(pid: 78, startedAt: nil)])
+    }
+
+    func testUnreadableDockerFrozenIsStillRefused() {
+        let data = Data(#"{"dockerFrozen": "yes"}"#.utf8)
+        XCTAssertThrowsError(try Store.makeDecoder().decode(RuntimeState.self, from: data))
+    }
+
     func testDatesAreISO8601ForBackstopScript() throws {
         let t0 = Date(timeIntervalSince1970: 1_800_000_000)
         try store.saveSession(Session(startedAt: t0, endsAt: t0))

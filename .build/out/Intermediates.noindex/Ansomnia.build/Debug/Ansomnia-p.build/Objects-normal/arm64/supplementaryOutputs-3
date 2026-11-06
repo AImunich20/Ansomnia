@@ -1,0 +1,51 @@
+{
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/Core/ProcessExit.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ProcessExit.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ProcessExit.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ProcessExit.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ProcessExit.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ProcessExit.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/Core/RecoveryLock.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/RecoveryLock.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/RecoveryLock.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/RecoveryLock.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/RecoveryLock.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/RecoveryLock.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/Core/ResumeFrozenCommand.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ResumeFrozenCommand.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ResumeFrozenCommand.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ResumeFrozenCommand.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ResumeFrozenCommand.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ResumeFrozenCommand.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/Core/SessionManager.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SessionManager.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SessionManager.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SessionManager.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SessionManager.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SessionManager.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/Core/SessionMath.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SessionMath.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SessionMath.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SessionMath.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SessionMath.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SessionMath.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/Core/Shell.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/Shell.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/Shell.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/Shell.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/Shell.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/Shell.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/Core/SleepGuard.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SleepGuard.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SleepGuard.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SleepGuard.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SleepGuard.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SleepGuard.swiftdeps"
+  }
+}

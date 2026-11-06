@@ -346,7 +346,29 @@ struct RuntimeState: Codable, Equatable, Sendable {
         for pid in legacy where !known.contains(pid) {
             frozenProcesses.append(FrozenProcess(pid: pid, identity: nil))
         }
-        dockerFrozen = try c.decodeIfPresent(Bool.self, forKey: .dockerFrozen) ?? false
+        // Builds up to 0.3.x wrote a list of the Docker pids they stopped
+        // here, not a flag. Read it as the flag it now is, and keep the pids
+        // as entries without identity so they are still undone.
+        if let flag = try? c.decodeIfPresent(Bool.self, forKey: .dockerFrozen) {
+            dockerFrozen = flag
+        } else {
+            let pids: [Int32]
+            if let bare = try? c.decode([Int32].self, forKey: .dockerFrozen) {
+                pids = bare
+            } else if let entries = try? c.decode([FrozenProcess].self, forKey: .dockerFrozen) {
+                pids = entries.map(\.pid)
+            } else {
+                // Neither shape: rethrow the Bool error so the journal is
+                // refused rather than guessed at.
+                _ = try c.decodeIfPresent(Bool.self, forKey: .dockerFrozen)
+                pids = []
+            }
+            let known = Set(frozenProcesses.map(\.pid))
+            for pid in pids where !known.contains(pid) {
+                frozenProcesses.append(FrozenProcess(pid: pid, identity: nil))
+            }
+            dockerFrozen = !pids.isEmpty
+        }
         savedAudioOutputs = try c.decodeIfPresent([SavedAudioOutput].self, forKey: .savedAudioOutputs) ?? []
         savedOutputVolume = try c.decodeIfPresent(Float.self, forKey: .savedOutputVolume)
         savedMuted = try c.decodeIfPresent(Bool.self, forKey: .savedMuted)

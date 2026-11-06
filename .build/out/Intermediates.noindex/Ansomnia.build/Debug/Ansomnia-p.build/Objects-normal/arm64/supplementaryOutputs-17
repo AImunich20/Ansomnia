@@ -1,0 +1,44 @@
+{
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/UI/PillView.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/PillView.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/PillView.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/PillView.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/PillView.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/PillView.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/UI/ReleaseCheck.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ReleaseCheck.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ReleaseCheck.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ReleaseCheck.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ReleaseCheck.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ReleaseCheck.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/UI/ReminderScheduler.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ReminderScheduler.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ReminderScheduler.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ReminderScheduler.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ReminderScheduler.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/ReminderScheduler.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/UI/SettingsView.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SettingsView.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SettingsView.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SettingsView.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SettingsView.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SettingsView.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/UI/SettingsWindow.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SettingsWindow.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SettingsWindow.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SettingsWindow.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SettingsWindow.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/SettingsWindow.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/UI/StatusItemController.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/StatusItemController.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/StatusItemController.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/StatusItemController.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/StatusItemController.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia-p.build/Objects-normal/arm64/StatusItemController.swiftdeps"
+  }
+}

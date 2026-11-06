@@ -1,0 +1,791 @@
+[
+  {
+    "isFramework" : true,
+    "moduleName" : "Accessibility",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Accessibility-AR72UEQDS29.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "AppKit",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/AppKit-3H3899BSAWR23.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "AudioToolbox",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/AudioToolbox-1SV9TCMS1ZRWN.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "ColorSync",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/ColorSync-3PWOWLDR7Q0OE.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "Combine",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Combine-20ZQVT2MCPQLT.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "CoreAudio",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreAudio-1OBC5IYOSCRY3.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "CoreData",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreData-262OFXYQ2Q4BN.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "CoreFoundation",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreFoundation-1RZNUM23KGY3K.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "CoreGraphics",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreGraphics-3F3DPIUWOVX9P.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "CoreImage",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreImage-2SSKJMW5SUO2U.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "CoreLocation",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreLocation-1NGRI9H43HE4N.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "CoreMIDI",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreMIDI-11NUTSGV96CZP.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "CoreMedia",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreMedia-2T8HQ3Z5F52V6.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "CoreText",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreText-15ZVBSD84KDQM.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "CoreTransferable",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreTransferable-1PN0P6PMNDWYU.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "CoreVideo",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreVideo-4WH3VEL1ZNEE.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "CryptoKit",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CryptoKit-11NFL4P23HO63.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "Darwin",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Darwin-11XAZ1GHRWQHK.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "DataDetection",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/DataDetection-1QW8HVZZF2QBM.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "DeveloperToolsSupport",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/DeveloperToolsSupport-367BT0N4NRZUL.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "Dispatch",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Dispatch-LEGWUOU86AX5.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "Distributed",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Distributed-1K30V6R274EB9.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "Foundation",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Foundation-V8IBRC3OHPJ8.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "IOKit",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/IOKit-PSB6JG7TVLAE.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "ImageIO",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/ImageIO-2CEEBYJ79L3PC.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "LocalAuthentication",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/LocalAuthentication-19XU1NWO8N4V1.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "Metal",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Metal-1I9OQ9O8Z9B7U.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "Network",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Network-3TVOP7L3E8H23.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "OSLog",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/OSLog-2EGZS6HOTYSYK.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "ObjectiveC",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/ObjectiveC-UGDBEXA5Q8S9.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "Observation",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Observation-2I4WNN8N7OFG3.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "QuartzCore",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/QuartzCore-2L9FP8ALJDRDO.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "Spatial",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Spatial-3639SXHF9K71R.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "Swift",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Swift-2MSATCKYVKBV1.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "SwiftOnoneSupport",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/SwiftOnoneSupport-1EGJ3YEY0U5RY.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "SwiftUI",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/SwiftUI-3H9LZ977B7M4.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "SwiftUICore",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/SwiftUICore-RKYPJMCPS8XZ.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "Symbols",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Symbols-2IG9BMH2U3N6C.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "Synchronization",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Synchronization-92QBFBACNA4U.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "System",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/System-1T85GD3YZHBMB.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "UniformTypeIdentifiers",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/UniformTypeIdentifiers-2OVH7YUROTOG4.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "XPC",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/XPC-3S3YFC7I1BR1I.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "_Builtin_float",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_Builtin_float-IXNKBIRM1Y7C.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "_Concurrency",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_Concurrency-1D03JL47Y2HOX.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "_DarwinFoundation1",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_DarwinFoundation1-XKGJ4IDRSLEH.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "_DarwinFoundation2",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_DarwinFoundation2-1DZC4X6GEX7MF.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "_DarwinFoundation3",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_DarwinFoundation3-1FN85SUNGP6GX.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "_StringProcessing",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_StringProcessing-1ICCDI2AMKICL.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "os",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/os-26OI04OCVYND0.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "simd",
+    "modulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/simd-3PPTOR3R1H1X3.swiftmodule"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/Accessibility.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Accessibility-648ESWR4943DFN6QIIZQWG8LD.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Accessibility"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/AppKit.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/AppKit-ANL4K0G9ETTPEJUVCGRUFSBLX.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "AppKit"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/ApplicationServices.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/ApplicationServices-49WIRZ5CIMLE4Q3TG9P5RGNYH.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "ApplicationServices"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/AudioToolbox.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/AudioToolbox-9JKBJDTXQKWRUU48N6ZHXGW3S.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "AudioToolbox"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CFNetwork.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CFNetwork-4ZR7DPP4MFNUQL5QDSYIFKXTC.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CFNetwork"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/cups.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CUPS-4JYQ8DGEM5MMY97H6S2RF8ZNS.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CUPS"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/Carbon.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Carbon-9QQUPMYOV0I05HU9OU6FR6LZH.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Carbon"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/ColorSync.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/ColorSync-F1Z4A0QLXNFHVZNLGAHB55H1G.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "ColorSync"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreAudio.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreAudio-CX96S5N4RKZ1TGT3UQPAMQD2B.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreAudio"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreAudioTypes.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreAudioTypes-CZMK2VZIXQNU0PRBGPOTY37SM.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreAudioTypes"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreData.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreData-42IZBZKKT78IH0GLE5ZHI6YJX.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreData"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreFoundation.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreFoundation-EO2THOEYWCTAWOCE9B7VZEI6D.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreFoundation"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreGraphics.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreGraphics-AO9CS3U2KJ6DAIM79JOOE0EW8.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreGraphics"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreImage.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreImage-962YP38P3C9Q2GHFMKLDB8EXS.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreImage"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreLocation.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreLocation-CI69P8FCLSS3A0WST0CKRK2YW.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreLocation"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreMIDI.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreMIDI-E0SCQ2M9K8OT00J8JFPUP42J.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreMIDI"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreMedia.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreMedia-CGEQYHRWVASUFB078P8QOF8VU.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreMedia"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreServices.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreServices-7EMS0SJ39LQG1WMEOSG37JMBI.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreServices"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreText.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreText-4O263EZSG7LNPW4IUG5QGNRNO.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreText"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreTransferable.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreTransferable-YEKDOV5TK8H2P7CCSR4ZAZLA.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreTransferable"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreVideo.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreVideo-1JWQQTJ9LX8X3AGT5Y2F4BHFB.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreVideo"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreWLAN.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/CoreWLAN-EIKX63G7NUQFAPZWE5HQ07MJ2.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreWLAN"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/Darwin.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Darwin-1183GJT54YJLI5ANQ8Q6NDBUU.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Darwin"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/DataDetection.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/DataDetection-CH9KSMQO79E2IMBCL63VGII0E.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "DataDetection"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/DeveloperToolsSupport.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/DeveloperToolsSupport-9PXR5D8LOP59JNJYBCJBSRZTA.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "DeveloperToolsSupport"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/DiskArbitration.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/DiskArbitration-E8BI9NBFB8XXLKKYGE923THLS.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "DiskArbitration"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/dispatch.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Dispatch-EWHF9ZZN1EE7F2PC9ISOGKKUA.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Dispatch"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/Foundation.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Foundation-7CI5NWSXBLYCB3PYGHNB87NAL.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Foundation"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/IOKit.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/IOKit-4H8YHMCFTRPM2AHGP7Z20TZPH.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "IOKit"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/IOSurface.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/IOSurface-2Y2Z41D4WV3RLIVN4P44S6MEV.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "IOSurface"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/ImageIO.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/ImageIO-8TC50JUUNODDZOH3TX2SA4P4M.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "ImageIO"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/LocalAuthentication.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/LocalAuthentication-1JA22F4V78TTL4SW27X55UICL.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "LocalAuthentication"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/DarwinBasic.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/MachO-B1J1RMS0I3EPDQH9T15L7RDG7.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "MachO"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/Metal.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Metal-2TPQRFB5BFCELQZMT9R0UXQ77.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Metal"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/Network.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Network-4XS3S3IRV45R9XBN0NA6CIYN0.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Network"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/OSLog.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/OSLog-2DTBF6PZONLONB7M41VD2VI1G.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "OSLog"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/ObjectiveC.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/ObjectiveC-4UAPOW2J64SXPXBT5R768QMY4.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "ObjectiveC"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/OpenGL.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/OpenGL-2KKNVXEUIJLAB286TGUL1MFDF.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "OpenGL"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/QuartzCore.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/QuartzCore-E7XNB5A1WMCZ6WCDA5Z8FZVOX.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "QuartzCore"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/Security.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Security-BWZMN9N23D9HXCWPADYGJNX59.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Security"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/ServiceManagement.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/ServiceManagement-3NWMWOYXU14MRWD2RR6S602D.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "ServiceManagement"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/Spatial\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Spatial-EJ4UX85T9RUURXZ2E12R7XJKX.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Spatial"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/lib\/swift\/shims\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/SwiftShims-AU2VLHUT9J17LR7KI5S41OSNQ.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "SwiftShims"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/SwiftUI.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/SwiftUI-64DOEHIGFRMGW8AIC2ZQVOD8E.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "SwiftUI"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/SwiftUICore.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/SwiftUICore-3GJQLBOB17S1TCCW9U9FVLNSW.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "SwiftUICore"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/Symbols.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/Symbols-A0AJXHHFH840R8DT245AE77F4.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Symbols"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/UniformTypeIdentifiers.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/UniformTypeIdentifiers-ABDFP1N2U7F3BNCWYNMT31L62.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "UniformTypeIdentifiers"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/UserNotifications.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/UserNotifications-D53QDW4GV9XEV5E4C6ADQ06EB.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "UserNotifications"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/xpc.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/XPC-EDT2A8JD6589T8VJRISY20Y7I.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "XPC"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/DarwinFoundation1.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_AvailabilityInternal-2D9MNNQ8OT9G10HAFCO77OKYA.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_AvailabilityInternal"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_Builtin_float-D6R81SQSQ1VQ7T4EVCH85Z92A.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_float"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_Builtin_intrinsics-5H3G1AHT6FMF4MGNYG840KOUR.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_intrinsics"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_Builtin_inttypes-1JOZ90B01DO5WRZ52TAEYAUV4.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_inttypes"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_Builtin_limits-4P4B2GKTVVU6SQUMELASBAY7M.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_limits"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_Builtin_stdarg-60YPTAFYQ7ZZJV74A9BAZJFKK.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_stdarg"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_Builtin_stdatomic-19T92MYHWY37GJY3NMLNE7CQM.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_stdatomic"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_Builtin_stdbool-E981NSBYK1H9FBGUIIE8YEQCF.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_stdbool"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_Builtin_stddef-6LCFT33SKRPHGH48Y08TNEV89.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_stddef"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_Builtin_stdint-7R86X994VXGSOPGB2WT4LK3R7.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_stdint"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_Builtin_tgmath-SS82E8M7YBRYF6WRQY57XDYU.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_tgmath"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/DarwinFoundation1.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_DarwinFoundation1-DAYNDCWTBPPEP5HMZS7FRM3BQ.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_DarwinFoundation1"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/DarwinFoundation2.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_DarwinFoundation2-2YQWP4X6ZHR9WC2HOXVNW6F0F.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_DarwinFoundation2"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/DarwinFoundation3.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_DarwinFoundation3-1N6FWQKKZ8GC5BT3SHL8BL7J.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_DarwinFoundation3"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/_LocationEssentials.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_LocationEssentials-E9419PKMIKKB8P4ZMN86BB7CX.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_LocationEssentials"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/lib\/swift\/shims\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/_SwiftConcurrencyShims-BP3FGU5MJRX2VZS9HZGPV27ZI.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_SwiftConcurrencyShims"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/dnssd.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/dnssd-5VTQLHNDLC6V750M2PTM2R0AP.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "dnssd"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/launch.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/launch-4OI1YFN988SAE9Q94Z5C954DY.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "launch"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/libDER\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/libDER-1HIKOL90Y84KV4NXFROM3G0Q9.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "libDER"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/libkern.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/libkern-3T91SHIDQJXEAMZZD71E16I72.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "libkern"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/os.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/os-2RUFG27KV63O7GCNGIBBIWRGR.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "os"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/os.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/os_object-ECXXZSIEHSONX0QSSQ0UHMZ44.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "os_object"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/os.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/os_workgroup-D8CKVON3CK9JVKKSXI44010KP.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "os_workgroup"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/ptrauth-4TQ1UEQYFW09B1N439D5N40Y9.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "ptrauth"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/ptrcheck-39EMFGHH3MZG2D7QWA7L4ETXV.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "ptrcheck"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/simd\/module.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/simd-44I6XWUA1NQIC4OCEK7D7VGHC.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "simd"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/c_standard_library.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/string_h-8K0II1PC3BY2EOO7OSSVYJQBJ.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "string_h"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/DarwinFoundation2.modulemap",
+    "clangModulePath" : "\/Users\/maybe\/github\/Ansomnia\/.build\/out\/SDKExplicitPrecompiledModules\/sys_types-6EEFQDLHEA4FDMU7UAWX7SA8J.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "sys_types"
+  }
+]

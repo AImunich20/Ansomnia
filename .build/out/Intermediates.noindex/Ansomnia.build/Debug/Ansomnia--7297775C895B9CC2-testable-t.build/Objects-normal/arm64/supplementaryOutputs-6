@@ -1,0 +1,51 @@
+{
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/Model/Config.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Config.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Config.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Config.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Config.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Config.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/Model/RuntimeState.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/RuntimeState.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/RuntimeState.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/RuntimeState.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/RuntimeState.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/RuntimeState.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/Model/Session.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Session.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Session.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Session.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Session.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Session.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/Model/UnfinishedCommandRecord.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/UnfinishedCommandRecord.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/UnfinishedCommandRecord.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/UnfinishedCommandRecord.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/UnfinishedCommandRecord.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/UnfinishedCommandRecord.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/Store/OwnerOnly.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/OwnerOnly.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/OwnerOnly.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/OwnerOnly.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/OwnerOnly.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/OwnerOnly.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/Store/Paths.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Paths.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Paths.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Paths.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Paths.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Paths.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/Sources/Ansomnia/Store/Store.swift" : {
+    "const-values" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Store.swiftconstvalues",
+    "dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Store.d",
+    "diagnostics" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Store.dia",
+    "object" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Store.o",
+    "swift-dependencies" : "/Users/maybe/github/Ansomnia/.build/out/Intermediates.noindex/Ansomnia.build/Debug/Ansomnia--7297775C895B9CC2-testable-t.build/Objects-normal/arm64/Store.swiftdeps"
+  }
+}

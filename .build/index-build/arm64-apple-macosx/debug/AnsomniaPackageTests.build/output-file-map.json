@@ -1,0 +1,11 @@
+{
+  "": {
+    "swift-dependencies": "/Users/maybe/github/Ansomnia/.build/index-build/arm64-apple-macosx/debug/AnsomniaPackageTests.build/primary.swiftdeps"
+  },
+  "/Users/maybe/github/Ansomnia/.build/index-build/arm64-apple-macosx/debug/AnsomniaPackageTests.derived/runner.swift": {
+    "dependencies": "/Users/maybe/github/Ansomnia/.build/index-build/arm64-apple-macosx/debug/AnsomniaPackageTests.build/runner.d",
+    "object": "/Users/maybe/github/Ansomnia/.build/index-build/arm64-apple-macosx/debug/AnsomniaPackageTests.build/runner.swift.o",
+    "swiftmodule": "/Users/maybe/github/Ansomnia/.build/index-build/arm64-apple-macosx/debug/AnsomniaPackageTests.build/runner~partial.swiftmodule",
+    "swift-dependencies": "/Users/maybe/github/Ansomnia/.build/index-build/arm64-apple-macosx/debug/AnsomniaPackageTests.build/runner.swiftdeps",
+    "diagnostics": "/Users/maybe/github/Ansomnia/.build/index-build/arm64-apple-macosx/debug/AnsomniaPackageTests.build/runner.dia"  }
+}
