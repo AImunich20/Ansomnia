@@ -303,10 +303,24 @@ final class NoRedirects: NSObject, URLSessionTaskDelegate, @unchecked Sendable {
 /// GitHub when the user clicks (the Latest release and the first page of
 /// the list) and a report under the button. When a newer stable release
 /// exists, `updater` downloads it and runs its installer in the background
-/// (UpdateInstaller). The app never checks on its own.
+/// (UpdateInstaller). It also checks by itself (`startAutomaticChecks`):
+/// half a minute after launch and every six hours after that, unless the
+/// user turned that off in Settings, and posts one notification per newer
+/// version.
 @MainActor
 @Observable
 final class ReleaseChecker {
+    nonisolated static let automaticChecksKey = "AutomaticUpdateChecks"
+    nonisolated static let notifiedVersionKey = "UpdateNotifiedVersion"
+    nonisolated static let automaticCheckInterval: Duration = .seconds(6 * 60 * 60)
+
+    /// On unless the user turned it off. Stored in UserDefaults, not
+    /// config.json: it is about the app, not about a session.
+    var automaticChecks: Bool {
+        didSet { UserDefaults.standard.set(automaticChecks, forKey: Self.automaticChecksKey) }
+    }
+    @ObservationIgnored private var schedule: Task<Void, Never>?
+
     enum State: Equatable {
         case idle
         case checking
@@ -324,6 +338,37 @@ final class ReleaseChecker {
     init(fetcher: any ReleaseFetching = GitHubReleaseFetcher(), installed: AppBuild = .current) {
         self.fetcher = fetcher
         self.installed = installed
+        automaticChecks = UserDefaults.standard.object(forKey: Self.automaticChecksKey) as? Bool ?? true
+    }
+
+    /// Checks 30 s after launch, then every six hours, while
+    /// `automaticChecks` is on. A newer stable release is announced once
+    /// per version; Settings > App then shows its install button.
+    func startAutomaticChecks(notifier: any Notifying) {
+        schedule?.cancel()
+        schedule = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(30))
+            while !Task.isCancelled {
+                guard let self else { return }
+                if self.automaticChecks {
+                    self.check()
+                    await self.finish()
+                    self.announce(with: notifier)
+                }
+                try? await Task.sleep(for: Self.automaticCheckInterval)
+            }
+        }
+    }
+
+    private func announce(with notifier: any Notifying) {
+        guard case let .checked(report) = state, report.standing == .newerStableAvailable,
+              let newer = report.newestStable else { return }
+        let defaults = UserDefaults.standard
+        guard defaults.string(forKey: Self.notifiedVersionKey) != newer.description else { return }
+        defaults.set(newer.description, forKey: Self.notifiedVersionKey)
+        Log.info("release check: announcing \(newer)")
+        notifier.post(title: "Ansomnia \(newer) is available",
+                      body: "Open Settings > App and click Download and install.")
     }
 
     /// Starts a check. A click while one is in flight does nothing.

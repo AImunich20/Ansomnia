@@ -87,6 +87,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             settings?.show()
         }
         Task { await manager.reconcile() }
+        if let notifier = manager.services?.notifier {
+            releases.startAutomaticChecks(notifier: notifier)
+        }
     }
 
     /// Quitting always ends the session (spec 1). Terminate is deferred until

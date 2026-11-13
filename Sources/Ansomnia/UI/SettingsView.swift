@@ -508,8 +508,8 @@ struct SettingsView: View {
         }
     }
 
-    /// The update check: one request to GitHub's releases list per click,
-    /// and the report under the buttons. When a newer stable release
+    /// The update check: on a click or on the automatic schedule, and the
+    /// report under the buttons. When a newer stable release
     /// exists, a button downloads it and runs its installer in the background.
     @ViewBuilder
     private var releaseCheck: some View {
@@ -518,9 +518,13 @@ struct SettingsView: View {
                 .disabled(releases.state == .checking)
             Button("Open releases page") { NSWorkspace.shared.open(GitHubReleaseFetcher.releasesPage) }
         }
+        Toggle("Check for updates automatically", isOn: Binding(
+            get: { releases.automaticChecks },
+            set: { releases.automaticChecks = $0 }
+        ))
         switch releases.state {
         case .idle:
-            Text("Asks GitHub when you click. If a newer release exists, Ansomnia can download it and install it for you.")
+            Text("Asks GitHub at launch, every six hours and when you click. If a newer release exists, Ansomnia tells you and can download and install it for you.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         case .checking:
